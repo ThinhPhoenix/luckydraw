@@ -18,7 +18,7 @@ export function Header() {
                     level={2}
                     className="!mt-2 !text-2xl font-semibold !text-white opacity-90 md:!text-3xl"
                 >
-                    Xuân Ất Tỵ 2025
+                    Xuân Bính Ngọ 2026
                 </Title>
             </div>
 
