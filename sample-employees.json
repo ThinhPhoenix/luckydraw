@@ -1,0 +1,152 @@
+[
+    {
+        "id": 1,
+        "name": "Nguyễn Văn An",
+        "isWinner": false,
+        "award": null
+    },
+    {
+        "id": 2,
+        "name": "Trần Thị Bình",
+        "isWinner": false,
+        "award": null
+    },
+    {
+        "id": 3,
+        "name": "Lê Hoàng Cường",
+        "isWinner": false,
+        "award": null
+    },
+    {
+        "id": 4,
+        "name": "Phạm Minh Dung",
+        "isWinner": false,
+        "award": null
+    },
+    {
+        "id": 5,
+        "name": "Hoàng Đức Dũng",
+        "isWinner": false,
+        "award": null
+    },
+    {
+        "id": 6,
+        "name": "Vũ Thị Hạnh",
+        "isWinner": false,
+        "award": null
+    },
+    {
+        "id": 7,
+        "name": "Đặng Văn Hùng",
+        "isWinner": false,
+        "award": null
+    },
+    {
+        "id": 8,
+        "name": "Bùi Thị Hương",
+        "isWinner": false,
+        "award": null
+    },
+    {
+        "id": 9,
+        "name": "Đỗ Minh Khôi",
+        "isWinner": false,
+        "award": null
+    },
+    {
+        "id": 10,
+        "name": "Ngô Thị Lan",
+        "isWinner": false,
+        "award": null
+    },
+    {
+        "id": 11,
+        "name": "Dương Văn Linh",
+        "isWinner": false,
+        "award": null
+    },
+    {
+        "id": 12,
+        "name": "Lý Thị Mai",
+        "isWinner": false,
+        "award": null
+    },
+    {
+        "id": 13,
+        "name": "Trương Văn Nam",
+        "isWinner": false,
+        "award": null
+    },
+    {
+        "id": 14,
+        "name": "Trịnh Thị Ngọc",
+        "isWinner": false,
+        "award": null
+    },
+    {
+        "id": 15,
+        "name": "Đinh Văn Phúc",
+        "isWinner": false,
+        "award": null
+    },
+    {
+        "id": 16,
+        "name": "Lâm Thị Quyên",
+        "isWinner": false,
+        "award": null
+    },
+    {
+        "id": 17,
+        "name": "Mai Văn Quân",
+        "isWinner": false,
+        "award": null
+    },
+    {
+        "id": 18,
+        "name": "Cao Thị Thu",
+        "isWinner": false,
+        "award": null
+    },
+    {
+        "id": 19,
+        "name": "Phan Văn Tú",
+        "isWinner": false,
+        "award": null
+    },
+    {
+        "id": 20,
+        "name": "Vương Thị Vân",
+        "isWinner": false,
+        "award": null
+    },
+    {
+        "id": 21,
+        "name": "Nguyễn Thành Đạt",
+        "isWinner": false,
+        "award": null
+    },
+    {
+        "id": 22,
+        "name": "Trần Ngọc Bích",
+        "isWinner": false,
+        "award": null
+    },
+    {
+        "id": 23,
+        "name": "Lê Văn Sơn",
+        "isWinner": false,
+        "award": null
+    },
+    {
+        "id": 24,
+        "name": "Phạm Thị Tuyết",
+        "isWinner": false,
+        "award": null
+    },
+    {
+        "id": 25,
+        "name": "Hoàng Văn Long",
+        "isWinner": false,
+        "award": null
+    }
+]
