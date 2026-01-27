@@ -140,16 +140,16 @@ function LuckyDrawPage() {
     return <div className="text-white text-center mt-20">Loading...</div>;
 
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-red-950 font-sans text-white">
+    <div className="relative min-h-screen w-full overflow-y-auto overflow-x-hidden bg-red-950 font-sans text-white">
       <FestiveBackground />
       <CelebrationEffects isActive={showCelebration} />
 
-      <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col p-4">
+      <div className="relative z-10 mx-auto flex h-full min-h-screen max-w-7xl flex-col p-4 pb-8">
         <Header />
 
-        <div className="flex flex-1 flex-col items-center gap-6 lg:flex-row lg:items-start lg:justify-between lg:gap-12 lg:pt-10 overflow-hidden">
+        <div className="flex flex-1 flex-col items-center gap-4 lg:flex-row lg:items-start lg:justify-between lg:gap-12 lg:pt-4">
           {/* Left/Center Column - Main Display */}
-          <div className="flex flex-1 flex-col items-center justify-center gap-8 w-full">
+          <div className="flex flex-1 flex-col items-center justify-center gap-6 w-full">
             <SpinDisplay
               winner={currentWinner}
               rotatingName={rotatingName}

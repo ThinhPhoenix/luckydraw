@@ -13,7 +13,13 @@ export function Header() {
           className="!mb-0 !text-5xl font-dancing font-bold uppercase tracking-wider !text-tet-gold drop-shadow-lg md:!text-7xl"
         >
           {/* <span className="text-gold-gradient">D-JOY</span> */}
-          <img src={Assets.Logo} alt="Logo" className="w-24 h-24" />
+          <div className="inline-block p-4 rounded-3xl bg-white/90 shadow-[0_0_20px_rgba(255,215,0,0.3)] backdrop-blur-sm border-2 border-white/50 mb-2">
+            <img
+              src={Assets.Logo}
+              alt="Logo"
+              className="w-24 h-24 object-contain"
+            />
+          </div>
         </Title>
         <Title
           level={2}
