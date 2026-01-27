@@ -1,0 +1,9 @@
+@import 'tailwindcss';
+
+#root {
+  background-color: white;
+}
+
+.todo {
+  @apply bg-blue-100 p-2 rounded-md border border-blue-300 mt-4 text-blue-800;
+}
