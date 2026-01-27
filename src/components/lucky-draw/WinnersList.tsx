@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef } from 'react';
 import type { AwardCategory, Employee } from '@/types/lucky-draw.types';
 
@@ -12,19 +13,13 @@ export function WinnersList({ employees, categories }: Props) {
 
   useEffect(() => {
     if (scrollRef.current) {
-      scrollRef.current.scrollTop = 0; // Newest on top, or can scroll to bottom if reversed
+      scrollRef.current.scrollTop = 0; // Newest on top
     }
   }, [winners.length]);
 
   const getCategoryName = (id: string | null) => {
     return categories.find((c) => c.id === id)?.name || 'Unknown';
   };
-
-  // Sort by most recent winner first (implicitly, since we append, so we reverse for display)
-  // Actually, let's just show them in order of winning, but we need to track that.
-  // The 'winners' array here is just filter from full list. Order depends on Employee ID or list order.
-  // Ideally history would be better, but let's assume filtering preserves order if we update carefully or just use history from props if available.
-  // Let's just map and reverse for "Latest on top" feel.
 
   const displayWinners = [...winners].reverse();
 
@@ -40,30 +35,36 @@ export function WinnersList({ employees, categories }: Props) {
         ref={scrollRef}
         className="winners-scroll flex-1 space-y-2 overflow-y-auto p-4"
       >
-        {displayWinners.length === 0 ? (
-          <div className="flex h-full items-center justify-center text-white/40 italic font-playfair text-lg">
-            Chưa có người chiến thắng
-          </div>
-        ) : (
-          displayWinners.map((winner, idx) => (
-            <div
-              key={winner.id}
-              className="group flex flex-col rounded-lg border border-tet-gold/20 bg-white/5 p-3 transition-colors hover:bg-white/10"
-            >
-              <div className="mb-1 flex items-center gap-2">
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-tet-gold text-xs font-bold text-tet-deep-red shadow-sm">
-                  {winners.length - idx}
-                </span>
-                <span className="font-bold text-white text-lg font-montserrat">
-                  {winner.name}
-                </span>
-              </div>
-              <div className="pl-8 text-sm text-tet-amber font-playfair italic">
-                🏆 {getCategoryName(winner.award)}
-              </div>
+        <AnimatePresence initial={false}>
+          {displayWinners.length === 0 ? (
+            <div className="flex h-full items-center justify-center text-white/40 italic font-playfair text-lg">
+              Chưa có người chiến thắng
             </div>
-          ))
-        )}
+          ) : (
+            displayWinners.map((winner, idx) => (
+              <motion.div
+                key={winner.id}
+                initial={{ opacity: 0, x: -20, height: 0 }}
+                animate={{ opacity: 1, x: 0, height: 'auto' }}
+                exit={{ opacity: 0, x: 20, height: 0 }}
+                transition={{ duration: 0.3 }}
+                className="group flex flex-col rounded-lg border border-tet-gold/20 bg-white/5 p-3 transition-colors hover:bg-white/10"
+              >
+                <div className="mb-1 flex items-center gap-2">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-tet-gold text-xs font-bold text-tet-deep-red shadow-sm">
+                    {winners.length - idx}
+                  </span>
+                  <span className="font-bold text-white text-lg font-montserrat">
+                    {winner.name}
+                  </span>
+                </div>
+                <div className="pl-8 text-sm text-tet-amber font-playfair italic">
+                  🏆 {getCategoryName(winner.award)}
+                </div>
+              </motion.div>
+            ))
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

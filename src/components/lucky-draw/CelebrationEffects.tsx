@@ -44,7 +44,7 @@ export function CelebrationEffects({ isActive }: Props) {
         particleCount: 150,
         spread: 100,
         origin: { y: 0.6 },
-        colors: ['#FFD700', '#DC143C', '#FFFFFF'],
+        colors: ['#FFD700', '#D2042D', '#FFBF00', '#FFFFFF'], // Gold, Red, Amber, White
       });
 
       // 2. Fireworks after slight delay
