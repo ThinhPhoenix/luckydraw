@@ -26,16 +26,19 @@ export function AwardSelector({
             onClick={() => onSelect(cat.id)}
             disabled={disabled || (isFull && !isActive)}
             className={`
-              !h-auto !min-w-[140px] !rounded-xl !border-2 !px-6 !py-3 !text-lg !font-semibold transition-all font-playfair
+              !h-auto !min-w-[140px] !rounded-xl !border-2 !px-6 !py-3 !text-lg !font-semibold transition-all duration-300 font-playfair relative overflow-hidden group
               ${
                 isActive
-                  ? '!border-tet-gold !bg-tet-deep-red !text-tet-gold shadow-[0_0_15px_rgba(255,215,0,0.4)] scale-105'
-                  : '!border-tet-gold/20 !bg-white/10 !text-white hover:!bg-white/20 hover:!border-tet-gold/50'
+                  ? '!border-tet-gold !bg-tet-deep-red !text-tet-gold shadow-[0_0_20px_rgba(255,215,0,0.6)] scale-105 animate-[pulse_2s_infinite]'
+                  : '!border-tet-gold/20 !bg-white/10 !text-white hover:!bg-white/20 hover:!border-tet-gold/80 hover:shadow-[0_0_15px_rgba(255,215,0,0.3)] hover:-translate-y-1'
               }
               ${isFull ? '!opacity-60 grayscale' : ''}
             `}
           >
-            <div className="flex flex-col items-center">
+            {/* Hover shine effect */}
+            <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-[shimmer_1s_infinite]" />
+
+            <div className="flex flex-col items-center relative z-10">
               <span>{cat.name}</span>
               <span
                 className={`text-xs font-montserrat mt-1 ${isActive ? 'text-tet-cream' : 'text-gray-300'}`}

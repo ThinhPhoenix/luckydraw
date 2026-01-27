@@ -49,8 +49,40 @@ export function FestiveBackground() {
       }, duration * 1000);
     };
 
+    // Create floating particles (fireflies/gold dust)
+    const createParticle = () => {
+      const particle = document.createElement('div');
+      const size = Math.random() * 4 + 2; // 2-6px
+
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.background = '#FFD700';
+      particle.style.position = 'absolute';
+      particle.style.borderRadius = '50%';
+      particle.style.opacity = '0';
+      particle.style.boxShadow = '0 0 10px #FFD700';
+      particle.style.left = `${Math.random() * 100}vw`;
+      particle.style.top = `${Math.random() * 100}vh`;
+      particle.style.animation = `float ${Math.random() * 10 + 10}s linear infinite, fade ${Math.random() * 3 + 2}s ease-in-out infinite alternate`;
+
+      container.appendChild(particle);
+
+      // Keep particles for a while but maybe recycle or just let them float indefinitely if we manage count
+      // For simplicity, let's remove them after long duration to prevent DOM bloat
+      setTimeout(() => {
+        if (container.contains(particle)) {
+          container.removeChild(particle);
+        }
+      }, 20000);
+    };
+
     const interval = setInterval(createPetal, 400); // Slightly fewer petals for better performance
-    return () => clearInterval(interval);
+    const particleInterval = setInterval(createParticle, 300); // Add particles frequently
+
+    return () => {
+      clearInterval(interval);
+      clearInterval(particleInterval);
+    };
   }, []);
 
   return (

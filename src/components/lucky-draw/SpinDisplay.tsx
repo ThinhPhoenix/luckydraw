@@ -1,4 +1,9 @@
-import { AnimatePresence, motion } from 'framer-motion';
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useTransform,
+} from 'framer-motion';
 
 interface Props {
   winner: string | null;
@@ -7,8 +12,31 @@ interface Props {
 }
 
 export function SpinDisplay({ winner, rotatingName, isSpinning }: Props) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const rotateX = useTransform(y, [-100, 100], [5, -5]);
+  const rotateY = useTransform(x, [-100, 100], [-5, 5]);
+
+  function handleMouseMove(event: React.MouseEvent<HTMLDivElement>) {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    x.set(event.clientX - centerX);
+    y.set(event.clientY - centerY);
+  }
+
+  function handleMouseLeave() {
+    x.set(0);
+    y.set(0);
+  }
+
   return (
-    <div className="relative flex h-[300px] w-full max-w-3xl items-center justify-center rounded-3xl border-4 border-tet-gold bg-black/40 p-8 shadow-[0_0_50px_rgba(255,0,0,0.3)] backdrop-blur-md md:h-[400px] overflow-hidden">
+    <motion.div
+      style={{ rotateX, rotateY, perspective: 1000 }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="relative flex h-[300px] w-full max-w-3xl items-center justify-center rounded-3xl border-4 border-tet-gold bg-black/40 p-8 shadow-[0_0_50px_rgba(255,0,0,0.3)] backdrop-blur-md md:h-[400px] overflow-hidden transition-shadow hover:shadow-[0_0_80px_rgba(255,215,0,0.4)]"
+    >
       {/* Decorative corners */}
       <div className="absolute -left-2 -top-2 h-16 w-16 border-l-4 border-t-4 border-tet-gold" />
       <div className="absolute -right-2 -top-2 h-16 w-16 border-r-4 border-t-4 border-tet-gold" />
@@ -33,8 +61,12 @@ export function SpinDisplay({ winner, rotatingName, isSpinning }: Props) {
               >
                 Người chiến thắng
               </motion.div>
-              <div className="text-6xl font-black font-dancing text-white drop-shadow-[0_0_15px_rgba(255,215,0,0.8)] md:text-8xl text-gold-gradient">
-                {winner}
+              <div className="relative">
+                <div className="text-6xl font-black font-dancing text-white drop-shadow-[0_0_15px_rgba(255,215,0,0.8)] md:text-8xl text-gold-gradient animate-[pulse_3s_ease-in-out_infinite]">
+                  {winner}
+                </div>
+                {/* Shimmer overlay */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12 animate-[shimmer_2s_infinite]" />
               </div>
             </motion.div>
           ) : (
@@ -66,6 +98,6 @@ export function SpinDisplay({ winner, rotatingName, isSpinning }: Props) {
           )}
         </AnimatePresence>
       </div>
-    </div>
+    </motion.div>
   );
 }
