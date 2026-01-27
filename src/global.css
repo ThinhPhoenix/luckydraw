@@ -1,4 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
 @import 'tailwindcss';
+
+@theme {
+  --font-dancing: 'Dancing Script', cursive;
+  --font-playfair: 'Playfair Display', serif;
+  --font-montserrat: 'Montserrat', sans-serif;
+
+  --color-tet-red: #D2042D;
+  --color-tet-deep-red: #8B0000;
+  --color-tet-gold: #FFD700;
+  --color-tet-amber: #FFBF00;
+  --color-tet-cream: #FFFDD0;
+}
 
 #root {
   background-color: white;

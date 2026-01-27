@@ -65,16 +65,26 @@
 
 /* Utility Classes */
 .text-gold-gradient {
-  background: linear-gradient(to bottom, #ffd700, #ffec8b, #cca300);
+  background: linear-gradient(to bottom, #ffd700, #fffdd0, #ffbf00, #daa520);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.3));
 }
 
 .bg-glass {
-  background: rgba(255, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 215, 0, 0.3);
+  background: rgba(139, 0, 0, 0.4);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+}
+
+.border-gradient-gold {
+  position: relative;
+  background:
+    linear-gradient(#8b0000, #8b0000) padding-box,
+    linear-gradient(to right, #ffd700, #fffdd0, #daa520) border-box;
+  border: 2px solid transparent;
 }
 
 .text-shadow-glow {
