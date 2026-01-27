@@ -65,7 +65,7 @@ export function AdminPanel({ isOpen, onClose, onUpdate }: Props) {
 
     return (
         <Modal
-            title="Admin Panel"
+            title="Quản trị hệ thống"
             open={isOpen}
             onCancel={onClose}
             footer={null}
