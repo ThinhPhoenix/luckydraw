@@ -20,7 +20,7 @@ export default defineConfig({
   },
   html: {
     template: 'public/index.html',
-    title: 'thinhphoenix/react',
+    title: 'D-JOY - LUCKY DRAW',
   },
   server: {
     port: envConfig.port,
