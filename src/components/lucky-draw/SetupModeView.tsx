@@ -1,3 +1,4 @@
+import { SettingOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { AdminPanel } from '@/components/lucky-draw/AdminPanel';
 import { AwardSelector } from '@/components/lucky-draw/AwardSelector';
@@ -89,6 +90,17 @@ export function SetupModeView({
       >
         🎬
       </Button>
+
+      <div className="absolute top-4 right-4 z-[100]">
+        <Button
+          type="primary"
+          icon={
+            <SettingOutlined style={{ fontSize: '18px', color: 'white' }} />
+          }
+          className="flex items-center justify-center rounded-full border shadow-xl backdrop-blur-md transition-all hover:scale-110"
+          onClick={onAdminOpen}
+        />
+      </div>
 
       <AdminPanel
         isOpen={isAdminOpen}
