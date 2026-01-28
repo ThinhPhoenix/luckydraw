@@ -15,7 +15,7 @@ export function AwardSelector({
   disabled,
 }: Props) {
   return (
-    <div className="flex w-full flex-wrap justify-center gap-4 px-4 py-6">
+    <div className="flex w-full flex-wrap justify-center gap-3 px-4 py-3">
       {categories.map((cat) => {
         const isActive = cat.id === currentId;
         const isFull = cat.remaining === 0;
@@ -26,7 +26,7 @@ export function AwardSelector({
             onClick={() => onSelect(cat.id)}
             disabled={disabled || (isFull && !isActive)}
             className={`
-              !h-auto !min-w-[140px] !rounded-xl !border-2 !px-6 !py-3 !text-lg !font-semibold transition-all duration-300 font-playfair relative overflow-hidden group
+              !h-auto !min-w-[120px] !rounded-xl !border-2 !px-4 !py-2 !text-base !font-semibold transition-all duration-300 font-playfair relative overflow-hidden group
               ${
                 isActive
                   ? '!border-tet-gold !bg-tet-deep-red !text-tet-gold shadow-[0_0_20px_rgba(255,215,0,0.6)] scale-105 animate-[pulse_2s_infinite]'

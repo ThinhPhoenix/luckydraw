@@ -1,19 +1,10 @@
-import { SettingOutlined } from '@ant-design/icons';
 import { createFileRoute } from '@tanstack/react-router';
-import { Button, message } from 'antd';
+import { message } from 'antd';
 import { useEffect, useState } from 'react';
-import { AdminPanel } from '@/components/lucky-draw/AdminPanel';
-import { AwardSelector } from '@/components/lucky-draw/AwardSelector';
-import { CelebrationEffects } from '@/components/lucky-draw/CelebrationEffects';
-import { FestiveBackground } from '@/components/lucky-draw/FestiveBackground';
-import { Header } from '@/components/lucky-draw/Header';
-import { SpinButton } from '@/components/lucky-draw/SpinButton';
-import { SpinDisplay } from '@/components/lucky-draw/SpinDisplay';
-import { WinnersList } from '@/components/lucky-draw/WinnersList';
+import { PresentationModeView } from '@/components/lucky-draw/PresentationModeView';
+import { SetupModeView } from '@/components/lucky-draw/SetupModeView';
 import { LuckyDrawStorage } from '@/helpers/lucky-draw-storage';
 import type { LuckyDrawState } from '@/types/lucky-draw.types';
-
-import '@/styles/lucky-draw.css';
 
 export const Route = createFileRoute('/lucky-draw')({
   component: LuckyDrawPage,
@@ -27,6 +18,7 @@ function LuckyDrawPage() {
   const [showCelebration, setShowCelebration] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [currentWinner, setCurrentWinner] = useState<string | null>(null);
+  const [presentationMode, setPresentationMode] = useState(false);
 
   // Load initial state
   useEffect(() => {
@@ -140,63 +132,32 @@ function LuckyDrawPage() {
     return <div className="text-white text-center mt-20">Loading...</div>;
 
   return (
-    <div className="relative min-h-screen w-full overflow-y-auto overflow-x-hidden bg-red-950 font-sans text-white">
-      <FestiveBackground />
-      <CelebrationEffects isActive={showCelebration} />
-
-      <div className="relative z-10 mx-auto flex h-full min-h-screen max-w-7xl flex-col p-4 pb-8">
-        <Header />
-
-        <div className="flex flex-1 flex-col items-center gap-4 lg:flex-row lg:items-start lg:justify-between lg:gap-12 lg:pt-4">
-          {/* Left/Center Column - Main Display */}
-          <div className="flex flex-1 flex-col items-center justify-center gap-6 w-full">
-            <SpinDisplay
-              winner={currentWinner}
-              rotatingName={rotatingName}
-              isSpinning={isSpinning}
-            />
-
-            <SpinButton
-              onClick={spin}
-              disabled={isSpinning || !state.currentCategory}
-              loading={isSpinning}
-            />
-
-            <AwardSelector
-              categories={state.categories}
-              currentId={state.currentCategory}
-              onSelect={handleSelectCategory}
-              disabled={isSpinning}
-            />
-          </div>
-
-          {/* Right Column - Winners List */}
-          <div className="h-64 w-full lg:h-full lg:w-96 overflow-y-auto">
-            <WinnersList
-              employees={state.employees}
-              categories={state.categories}
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Admin Toggle */}
-      <div className="absolute top-4 right-4 z-[100]">
-        <Button
-          type="primary"
-          icon={
-            <SettingOutlined style={{ fontSize: '18px', color: 'white' }} />
-          }
-          className="flex items-center justify-center rounded-full border shadow-xl backdrop-blur-md transition-all"
-          onClick={() => setIsAdminOpen(true)}
+    <div className="relative h-screen w-screen overflow-hidden bg-red-950 font-sans text-white">
+      {presentationMode ? (
+        <PresentationModeView
+          winner={currentWinner}
+          rotatingName={rotatingName}
+          isSpinning={isSpinning}
+          currentCategory={state?.currentCategory || null}
+          categories={state?.categories || []}
+          onExitPresentation={() => setPresentationMode(false)}
         />
-      </div>
-
-      <AdminPanel
-        isOpen={isAdminOpen}
-        onClose={() => setIsAdminOpen(false)}
-        onUpdate={handleUpdate}
-      />
+      ) : (
+        <SetupModeView
+          state={state}
+          isSpinning={isSpinning}
+          rotatingName={rotatingName}
+          showCelebration={showCelebration}
+          currentWinner={currentWinner}
+          isAdminOpen={isAdminOpen}
+          onSpin={spin}
+          onUpdate={handleUpdate}
+          onSelectCategory={handleSelectCategory}
+          onAdminOpen={() => setIsAdminOpen(true)}
+          onAdminClose={() => setIsAdminOpen(false)}
+          onStartPresentation={() => setPresentationMode(true)}
+        />
+      )}
     </div>
   );
 }
