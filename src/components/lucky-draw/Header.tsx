@@ -17,7 +17,7 @@ export function Header() {
             <img
               src={Assets.Logo}
               alt="Logo"
-              className="w-24 h-24 object-contain"
+              className="w-12 h-12 object-contain"
             />
           </div>
         </Title>
