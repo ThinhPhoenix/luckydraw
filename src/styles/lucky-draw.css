@@ -48,6 +48,318 @@
   }
 }
 
+/* Gold Tier Special Effects */
+@keyframes gold-shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes gold-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.4), 0 0 40px rgba(255, 215, 0, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.7), 0 0 60px rgba(255, 215, 0, 0.4), 0 0 90px rgba(255, 215, 0, 0.2);
+  }
+}
+
+@keyframes silver-pulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(192, 192, 192, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(192, 192, 192, 0.5), 0 0 40px rgba(192, 192, 192, 0.3);
+  }
+}
+
+@keyframes bronze-pulse {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(205, 127, 50, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(205, 127, 50, 0.4), 0 0 35px rgba(205, 127, 50, 0.25);
+  }
+}
+
+@keyframes border-rotate {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(180deg);
+  }
+}
+
+@keyframes float-particle {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-30px) translateX(10px);
+    opacity: 0;
+  }
+}
+
+@keyframes spotlight {
+  0%, 100% {
+    background: radial-gradient(ellipse at center, rgba(255, 215, 0, 0.15) 0%, transparent 70%);
+  }
+  50% {
+    background: radial-gradient(ellipse at center, rgba(255, 215, 0, 0.25) 0%, transparent 70%);
+  }
+}
+
+@keyframes medal-ribbon {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+/* Gold Tier Card Styles */
+.winner-card-gold {
+  position: relative;
+  overflow: hidden;
+  animation: gold-pulse 2s ease-in-out infinite;
+  transform: scale(1.05);
+  background: linear-gradient(135deg, rgba(30, 20, 0, 0.95), rgba(50, 35, 5, 0.95));
+  border: 2px solid rgba(255, 215, 0, 0.6);
+}
+
+.winner-card-gold::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  animation: shimmer 3s infinite;
+}
+
+.winner-card-gold::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(90deg, #ffd700, #fffdd0, #ffbf00, #ffd700);
+  background-size: 300% 100%;
+  animation: border-rotate 3s linear infinite;
+  border-radius: inherit;
+  z-index: -1;
+}
+
+.winner-card-gold .spotlight-effect {
+  position: absolute;
+  inset: 0;
+  animation: spotlight 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Silver Tier Card Styles */
+.winner-card-silver {
+  position: relative;
+  animation: silver-pulse 2.5s ease-in-out infinite;
+  background: linear-gradient(135deg, rgba(30, 30, 35, 0.95), rgba(45, 45, 50, 0.95));
+  border: 2px solid rgba(192, 192, 192, 0.5);
+}
+
+.winner-card-silver::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(90deg, #c0c0c0, #e8e8e8, #c0c0c0, #a0a0a0);
+  background-size: 300% 100%;
+  animation: border-rotate 4s linear infinite;
+  border-radius: inherit;
+  z-index: -1;
+}
+
+/* Bronze Tier Card Styles */
+.winner-card-bronze {
+  position: relative;
+  animation: bronze-pulse 3s ease-in-out infinite;
+  background: linear-gradient(135deg, rgba(40, 25, 10, 0.95), rgba(55, 35, 15, 0.95));
+  border: 2px solid rgba(205, 127, 50, 0.5);
+}
+
+.winner-card-bronze::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(90deg, #cd7f32, #daa520, #cd7f32, #b87333);
+  background-size: 300% 100%;
+  animation: border-rotate 5s linear infinite;
+  border-radius: inherit;
+  z-index: -1;
+}
+
+/* Sparkle Effects */
+.sparkle-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.sparkle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+.sparkle:nth-child(1) { top: 10%; left: 20%; animation-delay: 0s; }
+.sparkle:nth-child(2) { top: 30%; left: 80%; animation-delay: 0.3s; }
+.sparkle:nth-child(3) { top: 60%; left: 10%; animation-delay: 0.6s; }
+.sparkle:nth-child(4) { top: 80%; left: 70%; animation-delay: 0.9s; }
+.sparkle:nth-child(5) { top: 20%; left: 50%; animation-delay: 1.2s; }
+
+/* Floating Particles */
+.floating-particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  animation: float-particle 3s ease-in-out infinite;
+}
+
+.floating-particle.gold {
+  background: radial-gradient(circle, #ffd700, #ffbf00);
+  box-shadow: 0 0 6px #ffd700;
+}
+
+.floating-particle.silver {
+  background: radial-gradient(circle, #c0c0c0, #a0a0a0);
+  box-shadow: 0 0 6px #c0c0c0;
+}
+
+.floating-particle.bronze {
+  background: radial-gradient(circle, #cd7f32, #b87333);
+  box-shadow: 0 0 6px #cd7f32;
+}
+
+/* Medal Ribbon */
+.medal-ribbon {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 20px;
+  animation: medal-ribbon 2s ease-in-out infinite;
+}
+
+.medal-ribbon::before,
+.medal-ribbon::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.medal-ribbon.gold::before {
+  left: 0;
+  border-width: 20px 15px 0 0;
+  border-color: #ffd700 transparent transparent transparent;
+}
+
+.medal-ribbon.gold::after {
+  right: 0;
+  border-width: 0 15px 20px 0;
+  border-color: transparent #ffbf00 transparent transparent;
+}
+
+.medal-ribbon.silver::before {
+  left: 0;
+  border-width: 20px 15px 0 0;
+  border-color: #c0c0c0 transparent transparent transparent;
+}
+
+.medal-ribbon.silver::after {
+  right: 0;
+  border-width: 0 15px 20px 0;
+  border-color: transparent #e8e8e8 transparent transparent;
+}
+
+.medal-ribbon.bronze::before {
+  left: 0;
+  border-width: 20px 15px 0 0;
+  border-color: #cd7f32 transparent transparent transparent;
+}
+
+.medal-ribbon.bronze::after {
+  right: 0;
+  border-width: 0 15px 20px 0;
+  border-color: transparent #daa520 transparent transparent;
+}
+
+/* 3D Card Lift Effect */
+.winner-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.winner-card:hover {
+  transform: translateY(-5px) rotateX(5deg);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.winner-card-gold:hover {
+  transform: scale(1.05) translateY(-8px) rotateX(5deg);
+  box-shadow: 0 20px 40px rgba(255, 215, 0, 0.4);
+}
+
+/* Crown Icon Animation */
+@keyframes crown-shine {
+  0%, 100% {
+    filter: brightness(1) drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
+  }
+  50% {
+    filter: brightness(1.3) drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
+  }
+}
+
+.crown-icon {
+  animation: crown-shine 2s ease-in-out infinite;
+  font-size: 1.5rem;
+}
+
 /* Custom Scrollbar for Winners List */
 .winners-scroll::-webkit-scrollbar {
   width: 6px;
@@ -98,94 +410,25 @@
 /* Cherry Blossom Animation */
 .petal {
   position: absolute;
-  pointer-events: none;
-  z-index: 10;
+  background: linear-gradient(135deg, #ffb7c5, #ffc0cb);
+  border-radius: 100% 0 100% 0;
+  opacity: 0.8;
+  animation: fall linear infinite;
 }
 
-@keyframes fall-sway-1 {
+@keyframes fall {
   0% {
-    transform: translate(0, -10vh) rotate(0deg);
+    transform: translateY(-100vh) rotate(0deg);
     opacity: 0;
   }
-
   10% {
-    opacity: 1;
+    opacity: 0.8;
   }
-
+  90% {
+    opacity: 0.8;
+  }
   100% {
-    transform: translate(100px, 100vh) rotate(720deg);
+    transform: translateY(100vh) rotate(720deg);
     opacity: 0;
-  }
-}
-
-@keyframes fall-sway-2 {
-  0% {
-    transform: translate(0, -10vh) rotate(0deg);
-    opacity: 0;
-  }
-
-  10% {
-    opacity: 1;
-  }
-
-  100% {
-    transform: translate(-100px, 100vh) rotate(-720deg);
-    opacity: 0;
-  }
-}
-
-@keyframes fall-sway-3 {
-  0% {
-    transform: translate(0, -10vh) rotate(0deg);
-    opacity: 0;
-  }
-
-  10% {
-    opacity: 1;
-  }
-
-  50% {
-    transform: translate(50px, 50vh) rotate(180deg);
-  }
-
-  100% {
-    transform: translate(-50px, 100vh) rotate(360deg);
-    opacity: 0;
-  }
-}
-
-@keyframes flyRight {
-  0% {
-    transform: translateX(0) translateY(0);
-  }
-
-  25% {
-    transform: translateX(40vw) translateY(-50px);
-  }
-
-  50% {
-    transform: translateX(70vw) translateY(50px);
-  }
-
-  100% {
-    transform: translateX(120vw) translateY(-20px);
-  }
-}
-
-@keyframes flyLeft {
-  0% {
-    transform: translateX(0) scaleX(-1);
-  }
-
-  25% {
-    transform: translateX(-40vw) translateY(50px) scaleX(-1);
-  }
-
-  50% {
-    transform: translateX(-70vw) translateY(-50px) scaleX(-1);
-  }
-
-  100% {
-    transform: translateX(-120vw) translateY(20px) scaleX(-1);
   }
 }
