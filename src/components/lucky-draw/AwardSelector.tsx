@@ -35,9 +35,6 @@ export function AwardSelector({
               ${isFull ? '!opacity-60 grayscale' : ''}
             `}
           >
-            {/* Hover shine effect */}
-            <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-[shimmer_1s_infinite]" />
-
             <div className="flex flex-col items-center relative z-10">
               <span>{cat.name}</span>
               <span
