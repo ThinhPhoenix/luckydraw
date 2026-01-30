@@ -111,6 +111,9 @@ function LuckyDrawPage() {
     newState.categories[catIndex].remaining--;
     newState.categories[catIndex].winners.push(winner);
 
+    // Mark as having spun at least once
+    newState.hasSpun = true;
+
     newState.history.push({
       timestamp: Date.now(),
       winnerId: winner.id,

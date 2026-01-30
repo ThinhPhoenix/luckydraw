@@ -22,6 +22,7 @@ export interface LuckyDrawState {
     winnerId: string | number;
     categoryId: string;
   }[];
+  hasSpun: boolean;
 }
 
 export const DEFAULT_CATEGORIES: AwardCategory[] = [

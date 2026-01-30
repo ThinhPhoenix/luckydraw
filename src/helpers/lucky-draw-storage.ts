@@ -8,9 +8,10 @@ const STORAGE_KEY = 'djoy_lucky_draw_state';
 
 const defaultState: LuckyDrawState = {
   employees: [],
-  categories: DEFAULT_CATEGORIES,
+  categories: JSON.parse(JSON.stringify(DEFAULT_CATEGORIES)),
   currentCategory: DEFAULT_CATEGORIES[0].id,
   history: [],
+  hasSpun: false,
 };
 
 export const LuckyDrawStorage = {
@@ -38,6 +39,31 @@ export const LuckyDrawStorage = {
     if (typeof window === 'undefined') return;
     localStorage.removeItem(STORAGE_KEY);
     window.location.reload();
+  },
+
+  updateCategoryCounts: (counts: { id: string; total: number }[]) => {
+    const currentState = LuckyDrawStorage.getState();
+    const updatedCategories = currentState.categories.map((cat) => {
+      const countUpdate = counts.find((c) => c.id === cat.id);
+      if (countUpdate) {
+        return {
+          ...cat,
+          total: countUpdate.total,
+          remaining: countUpdate.total - cat.winners.length,
+        };
+      }
+      return cat;
+    });
+    const newState = { ...currentState, categories: updatedCategories };
+    LuckyDrawStorage.saveState(newState);
+    return newState;
+  },
+
+  setHasSpun: (value: boolean) => {
+    const currentState = LuckyDrawStorage.getState();
+    const newState = { ...currentState, hasSpun: value };
+    LuckyDrawStorage.saveState(newState);
+    return newState;
   },
 
   initializeWithEmployees: (employees: Employee[]) => {
