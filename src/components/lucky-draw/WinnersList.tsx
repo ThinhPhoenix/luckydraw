@@ -45,7 +45,8 @@ const TIER_STYLES: Record<AwardTier, TierStyles> = {
     hasRibbon: true,
   },
   consolation: {
-    cardClass: 'winner-card border-2 border-tet-gold/30 bg-white/10 hover:bg-white/15',
+    cardClass:
+      'winner-card border-2 border-tet-gold/30 bg-white/10 hover:bg-white/15',
     badge: 'bg-white text-yellow-700',
     textColor: 'text-white',
     icon: '🎁',
@@ -54,36 +55,23 @@ const TIER_STYLES: Record<AwardTier, TierStyles> = {
   },
 };
 
-function getAwardTier(awardId: string | null): AwardTier {
-  switch (awardId) {
-    case 'giai-nhat':
+// Get award tier based on tier number (1=gold, 2=silver, 3=bronze, 4+=consolation)
+function getAwardTierByNumber(tier: number): AwardTier {
+  switch (tier) {
+    case 1:
       return 'gold';
-    case 'giai-nhi':
+    case 2:
       return 'silver';
-    case 'giai-ba':
+    case 3:
       return 'bronze';
     default:
       return 'consolation';
   }
 }
 
-// Priority order for sorting: gold (0) > silver (1) > bronze (2) > consolation (3)
-function getTierPriority(awardId: string | null): number {
-  switch (awardId) {
-    case 'giai-nhat':
-      return 0;
-    case 'giai-nhi':
-      return 1;
-    case 'giai-ba':
-      return 2;
-    default:
-      return 3;
-  }
-}
-
-function getTierStyles(awardId: string | null): TierStyles {
-  const tier = getAwardTier(awardId);
-  return TIER_STYLES[tier];
+function getTierStylesByNumber(tier: number): TierStyles {
+  const awardTier = getAwardTierByNumber(tier);
+  return TIER_STYLES[awardTier];
 }
 
 // Sparkle component for top tiers
@@ -105,10 +93,22 @@ function FloatingParticles({ tier }: { tier: AwardTier }) {
 
   return (
     <>
-      <div className={`floating-particle ${tier}`} style={{ left: '10%', animationDelay: '0s' }} />
-      <div className={`floating-particle ${tier}`} style={{ left: '30%', animationDelay: '1s' }} />
-      <div className={`floating-particle ${tier}`} style={{ left: '70%', animationDelay: '2s' }} />
-      <div className={`floating-particle ${tier}`} style={{ left: '90%', animationDelay: '0.5s' }} />
+      <div
+        className={`floating-particle ${tier}`}
+        style={{ left: '10%', animationDelay: '0s' }}
+      />
+      <div
+        className={`floating-particle ${tier}`}
+        style={{ left: '30%', animationDelay: '1s' }}
+      />
+      <div
+        className={`floating-particle ${tier}`}
+        style={{ left: '70%', animationDelay: '2s' }}
+      />
+      <div
+        className={`floating-particle ${tier}`}
+        style={{ left: '90%', animationDelay: '0.5s' }}
+      />
     </>
   );
 }
@@ -129,15 +129,17 @@ export function WinnersList({ employees, categories }: Props) {
     }
   }, []);
 
-  const getCategoryName = (id: string | null) => {
-    return categories.find((c) => c.id === id)?.name || 'Unknown';
+  const getCategory = (id: string | null) => {
+    return categories.find((c) => c.id === id);
   };
 
-  // Sort winners by tier priority: gold > silver > bronze > consolation
+  // Sort winners by tier priority: gold (1) > silver (2) > bronze (3) > consolation (4+)
   const displayWinners = [...winners].sort((a, b) => {
-    const priorityA = getTierPriority(a.award);
-    const priorityB = getTierPriority(b.award);
-    return priorityA - priorityB;
+    const catA = getCategory(a.award);
+    const catB = getCategory(b.award);
+    const tierA = catA?.tier ?? 999;
+    const tierB = catB?.tier ?? 999;
+    return tierA - tierB;
   });
 
   return (
@@ -155,12 +157,14 @@ export function WinnersList({ employees, categories }: Props) {
         <AnimatePresence initial={false}>
           {displayWinners.length === 0 ? (
             <div className="flex h-full items-center justify-center text-white/40 italic font-playfair text-lg">
-              Chưa có ngườii chiến thắng
+              Chưa có người chiến thắng
             </div>
           ) : (
             displayWinners.map((winner, idx) => {
-              const styles = getTierStyles(winner.award);
-              const tier = getAwardTier(winner.award);
+              const category = getCategory(winner.award);
+              const tierNumber = category?.tier ?? 4;
+              const styles = getTierStylesByNumber(tierNumber);
+              const tier = getAwardTierByNumber(tierNumber);
               const isGold = tier === 'gold';
 
               return (
@@ -190,20 +194,31 @@ export function WinnersList({ employees, categories }: Props) {
                   <FloatingParticles tier={tier} />
 
                   {/* Content */}
-                  <div className={`relative z-10 flex items-center gap-3 ${isGold ? 'mb-2' : 'mb-1'}`}>
-                    <span className={`flex items-center justify-center rounded-full font-bold shadow-sm ring-2 ring-white/20 ${isGold ? 'h-9 w-9 text-base' : 'h-7 w-7 text-sm'} ${styles.badge}`}>
+                  <div
+                    className={`relative z-10 flex items-center gap-3 ${isGold ? 'mb-2' : 'mb-1'}`}
+                  >
+                    <span
+                      className={`flex items-center justify-center rounded-full font-bold shadow-sm ring-2 ring-white/20 ${isGold ? 'h-9 w-9 text-base' : 'h-7 w-7 text-sm'} ${styles.badge}`}
+                    >
                       {idx + 1}
                     </span>
-                    <span className={`font-bold text-white font-montserrat flex-1 drop-shadow-md ${isGold ? 'text-2xl' : 'text-lg'}`}>
+                    <span
+                      className={`font-bold text-white font-montserrat flex-1 drop-shadow-md ${isGold ? 'text-2xl' : 'text-lg'}`}
+                    >
                       {winner.name}
                     </span>
-                    <span className={`${isGold ? 'crown-icon text-2xl' : 'text-lg'} drop-shadow-md`} title={getCategoryName(winner.award)}>
+                    <span
+                      className={`${isGold ? 'crown-icon text-2xl' : 'text-lg'} drop-shadow-md`}
+                      title={category?.name || 'Unknown'}
+                    >
                       {styles.icon}
                     </span>
                   </div>
 
-                  <div className={`relative z-10 pl-12 font-playfair font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] ${isGold ? 'text-lg' : 'text-sm'} ${styles.textColor}`}>
-                    {getCategoryName(winner.award)}
+                  <div
+                    className={`relative z-10 pl-12 font-playfair font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] ${isGold ? 'text-lg' : 'text-sm'} ${styles.textColor}`}
+                  >
+                    {category?.name || 'Unknown'}
                   </div>
                 </motion.div>
               );

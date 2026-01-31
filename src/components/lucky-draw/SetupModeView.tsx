@@ -43,6 +43,10 @@ export function SetupModeView({
   if (!state)
     return <div className="text-white text-center mt-20">Loading...</div>;
 
+  const currentCategory = state.categories.find(
+    (c) => c.id === state.currentCategory,
+  );
+
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-red-950 font-sans text-white">
       <FestiveBackground />
@@ -57,6 +61,7 @@ export function SetupModeView({
               winner={currentWinner}
               rotatingName={rotatingName}
               isSpinning={isSpinning}
+              currentCategory={currentCategory || null}
             />
 
             <SpinButton

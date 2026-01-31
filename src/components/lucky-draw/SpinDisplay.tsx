@@ -5,11 +5,37 @@ import {
   useSpring,
   useTransform,
 } from 'framer-motion';
+import type { AwardCategory } from '@/types/lucky-draw.types';
 
 interface Props {
   winner: string | null;
   rotatingName: string;
   isSpinning: boolean;
+  currentCategory: AwardCategory | null;
+}
+
+const TIER_NAMES: Record<number, string> = {
+  1: 'Vàng',
+  2: 'Bạc',
+  3: 'Đồng',
+  4: 'Khuyến khích',
+};
+
+function getTierBadgeColor(tier: number) {
+  switch (tier) {
+    case 1:
+      return 'bg-yellow-500';
+    case 2:
+      return 'bg-gray-400';
+    case 3:
+      return 'bg-orange-600';
+    default:
+      return 'bg-blue-500';
+  }
+}
+
+function getTierName(tier: number): string {
+  return TIER_NAMES[tier] || `Tier ${tier}`;
 }
 
 const springConfig = {
@@ -24,7 +50,12 @@ const shadowSpringConfig = {
   mass: 0.3,
 };
 
-export function SpinDisplay({ winner, rotatingName, isSpinning }: Props) {
+export function SpinDisplay({
+  winner,
+  rotatingName,
+  isSpinning,
+  currentCategory,
+}: Props) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const glareX = useMotionValue(0);
@@ -175,6 +206,27 @@ export function SpinDisplay({ winner, rotatingName, isSpinning }: Props) {
               transition={{ duration: 0.6, ease: 'easeOut' }}
               className="flex flex-col items-center [transform-style:preserve-3d]"
             >
+              {/* Award Info */}
+              {currentCategory && (
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                  className="mb-2 flex items-center gap-2 [transform:translateZ(15px)]"
+                >
+                  <span
+                    className={`flex h-6 w-6 items-center justify-center rounded-full text-sm font-bold text-white ${getTierBadgeColor(currentCategory.tier)}`}
+                  >
+                    {currentCategory.tier}
+                  </span>
+                  <span className="text-sm font-medium text-tet-cream">
+                    {getTierName(currentCategory.tier)}
+                  </span>
+                  <span className="text-lg font-medium text-tet-gold font-playfair">
+                    {currentCategory.name}
+                  </span>
+                </motion.div>
+              )}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -204,6 +256,26 @@ export function SpinDisplay({ winner, rotatingName, isSpinning }: Props) {
               key="rotating"
               className="flex flex-col items-center w-full [transform-style:preserve-3d]"
             >
+              {/* Award Info during spin */}
+              {currentCategory && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="mb-2 flex items-center gap-2 [transform:translateZ(15px)]"
+                >
+                  <span
+                    className={`flex h-6 w-6 items-center justify-center rounded-full text-sm font-bold text-white ${getTierBadgeColor(currentCategory.tier)}`}
+                  >
+                    {currentCategory.tier}
+                  </span>
+                  <span className="text-sm font-medium text-tet-cream">
+                    {getTierName(currentCategory.tier)}
+                  </span>
+                  <span className="text-lg font-medium text-tet-gold font-playfair">
+                    {currentCategory.name}
+                  </span>
+                </motion.div>
+              )}
               <motion.div
                 className="mb-4 text-xl font-medium text-white/60 font-playfair [transform:translateZ(15px)]"
                 animate={{ opacity: isSpinning ? 0.8 : 0.6 }}

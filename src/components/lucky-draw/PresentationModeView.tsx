@@ -11,6 +11,30 @@ interface Props {
   onExitPresentation: () => void;
 }
 
+const TIER_NAMES: Record<number, string> = {
+  1: 'Vàng',
+  2: 'Bạc',
+  3: 'Đồng',
+  4: 'Khuyến khích',
+};
+
+function getTierBadgeColor(tier: number) {
+  switch (tier) {
+    case 1:
+      return 'bg-yellow-500';
+    case 2:
+      return 'bg-gray-400';
+    case 3:
+      return 'bg-orange-600';
+    default:
+      return 'bg-blue-500';
+  }
+}
+
+function getTierName(tier: number): string {
+  return TIER_NAMES[tier] || `Tier ${tier}`;
+}
+
 export function PresentationModeView({
   winner,
   rotatingName,
@@ -56,6 +80,26 @@ export function PresentationModeView({
                       transition={{ duration: 0.8, ease: 'easeOut' }}
                       className="flex flex-col items-center"
                     >
+                      {currentCat && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.2 }}
+                          className="mb-4 flex items-center gap-3"
+                        >
+                          <span
+                            className={`flex h-10 w-10 items-center justify-center rounded-full text-xl font-bold text-white ${getTierBadgeColor(currentCat.tier)}`}
+                          >
+                            {currentCat.tier}
+                          </span>
+                          <span className="text-xl font-medium text-tet-cream">
+                            {getTierName(currentCat.tier)}
+                          </span>
+                          <span className="text-3xl font-medium text-tet-gold font-playfair">
+                            {currentCat.name}
+                          </span>
+                        </motion.div>
+                      )}
                       <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -90,6 +134,25 @@ export function PresentationModeView({
                       key="rotating"
                       className="flex flex-col items-center w-full"
                     >
+                      {currentCat && (
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          className="mb-4 flex items-center gap-3"
+                        >
+                          <span
+                            className={`flex h-10 w-10 items-center justify-center rounded-full text-xl font-bold text-white ${getTierBadgeColor(currentCat.tier)}`}
+                          >
+                            {currentCat.tier}
+                          </span>
+                          <span className="text-xl font-medium text-tet-cream">
+                            {getTierName(currentCat.tier)}
+                          </span>
+                          <span className="text-3xl font-medium text-tet-gold font-playfair">
+                            {currentCat.name}
+                          </span>
+                        </motion.div>
+                      )}
                       <motion.div
                         className="mb-8 text-3xl font-medium text-white/70 font-playfair"
                         animate={{ opacity: [0.5, 0.8, 0.5] }}
@@ -126,14 +189,26 @@ export function PresentationModeView({
           >
             <div className="flex items-center gap-4 rounded-2xl border-4 border-tet-gold bg-black/60 backdrop-blur-xl px-8 py-4 shadow-[0_0_50px_rgba(255,215,0,0.3)]">
               <span className="text-5xl">🏆</span>
-              <div className="flex flex-col">
-                <div className="text-2xl font-medium text-tet-gold font-playfair uppercase tracking-wider">
-                  {currentCat.name}
-                </div>
-                <div className="text-xl text-white/80 font-montserrat">
-                  {currentCat.remaining > 0
-                    ? `${currentCat.remaining} còn lại`
-                    : 'Đã đủ'}
+              <div className="flex items-center gap-3">
+                <span
+                  className={`flex h-8 w-8 items-center justify-center rounded-full text-lg font-bold text-white ${getTierBadgeColor(currentCat.tier)}`}
+                >
+                  {currentCat.tier}
+                </span>
+                <div className="flex flex-col">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-tet-cream font-medium">
+                      {getTierName(currentCat.tier)}
+                    </span>
+                  </div>
+                  <div className="text-2xl font-medium text-tet-gold font-playfair uppercase tracking-wider">
+                    {currentCat.name}
+                  </div>
+                  <div className="text-xl text-white/80 font-montserrat">
+                    {currentCat.remaining > 0
+                      ? `${currentCat.remaining} còn lại`
+                      : 'Đã đủ'}
+                  </div>
                 </div>
               </div>
             </div>

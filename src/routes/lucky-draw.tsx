@@ -45,9 +45,21 @@ function LuckyDrawPage() {
   };
 
   const spin = () => {
-    if (!state || !state.currentCategory) return;
+    if (!state) return;
 
     // 1. Validation
+    if (state.categories.length === 0) {
+      message.error(
+        'Chưa có giải thưởng nào! Vui lòng thêm giải thưởng trong phần Admin.',
+      );
+      return;
+    }
+
+    if (!state.currentCategory) {
+      message.warning('Vui lòng chọn giải thưởng trước khi quay!');
+      return;
+    }
+
     const category = state.categories.find(
       (c) => c.id === state.currentCategory,
     );

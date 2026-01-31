@@ -20,7 +20,10 @@ const ROULETTE_SEGMENTS = [
 
 export function SpinButton({ onClick, disabled, loading }: Props) {
   return (
-    <div className="relative flex items-center justify-center" style={{ perspective: '1000px' }}>
+    <div
+      className="relative flex items-center justify-center"
+      style={{ perspective: '1000px' }}
+    >
       {/* Outer rotating gradient ring - only when not loading */}
       {!disabled && !loading && (
         <>
@@ -34,7 +37,8 @@ export function SpinButton({ onClick, disabled, loading }: Props) {
               top: '50%',
               x: '-50%',
               y: '-50%',
-              background: 'conic-gradient(from 0deg, #ffd700, #ff0000, #ffd700, #ff0000, #ffd700)',
+              background:
+                'conic-gradient(from 0deg, #ffd700, #ff0000, #ffd700, #ff0000, #ffd700)',
               padding: '4px',
             }}
             animate={{ rotate: 360 }}
@@ -53,7 +57,8 @@ export function SpinButton({ onClick, disabled, loading }: Props) {
               top: '50%',
               x: '-50%',
               y: '-50%',
-              background: 'conic-gradient(from 180deg, transparent, rgba(255,215,0,0.8), transparent, rgba(255,0,0,0.8), transparent)',
+              background:
+                'conic-gradient(from 180deg, transparent, rgba(255,215,0,0.8), transparent, rgba(255,0,0,0.8), transparent)',
               padding: '2px',
             }}
             animate={{ rotate: -360 }}
@@ -189,12 +194,20 @@ export function SpinButton({ onClick, disabled, loading }: Props) {
             ? {
                 rotateY: { duration: 4, repeat: Infinity, ease: 'linear' },
                 scale: { duration: 1.5, repeat: Infinity, ease: 'easeInOut' },
-                boxShadow: { duration: 1.5, repeat: Infinity, ease: 'easeInOut' },
+                boxShadow: {
+                  duration: 1.5,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                },
               }
             : loading
               ? {
                   scale: { duration: 0.2, repeat: Infinity, ease: 'easeInOut' },
-                  boxShadow: { duration: 0.3, repeat: Infinity, ease: 'easeInOut' },
+                  boxShadow: {
+                    duration: 0.3,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  },
                 }
               : {}
         }
@@ -215,7 +228,13 @@ export function SpinButton({ onClick, disabled, loading }: Props) {
         {/* Paddle Face with inner rotation */}
         <motion.div
           className="relative z-10 flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-tr from-tet-gold to-tet-cream shadow-inner border-2 border-tet-amber overflow-hidden"
-          animate={!disabled && !loading ? { rotate: 360 } : loading ? { rotate: 720 } : {}}
+          animate={
+            !disabled && !loading
+              ? { rotate: 360 }
+              : loading
+                ? { rotate: 720 }
+                : {}
+          }
           transition={
             !disabled && !loading
               ? { duration: 8, repeat: Infinity, ease: 'linear' }
@@ -246,7 +265,11 @@ export function SpinButton({ onClick, disabled, loading }: Props) {
             <motion.span
               className="relative z-10 text-2xl font-black font-playfair tracking-widest text-tet-deep-red"
               animate={!disabled ? { rotate: -360 } : {}}
-              transition={!disabled ? { duration: 8, repeat: Infinity, ease: 'linear' } : {}}
+              transition={
+                !disabled
+                  ? { duration: 8, repeat: Infinity, ease: 'linear' }
+                  : {}
+              }
             >
               QUAY
             </motion.span>
@@ -255,7 +278,13 @@ export function SpinButton({ onClick, disabled, loading }: Props) {
           {/* Shine effect - faster when loading */}
           <motion.div
             className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/40 to-transparent"
-            animate={!disabled && !loading ? { x: ['-100%', '100%'] } : loading ? { x: ['-100%', '100%'] } : {}}
+            animate={
+              !disabled && !loading
+                ? { x: ['-100%', '100%'] }
+                : loading
+                  ? { x: ['-100%', '100%'] }
+                  : {}
+            }
             transition={
               !disabled && !loading
                 ? { duration: 2, repeat: Infinity, ease: 'linear' }

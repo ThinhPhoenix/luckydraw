@@ -1,15 +1,15 @@
-import {
-  DEFAULT_CATEGORIES,
-  type Employee,
-  type LuckyDrawState,
+import type {
+  AwardCategory,
+  Employee,
+  LuckyDrawState,
 } from '@/types/lucky-draw.types';
 
 const STORAGE_KEY = 'djoy_lucky_draw_state';
 
 const defaultState: LuckyDrawState = {
   employees: [],
-  categories: JSON.parse(JSON.stringify(DEFAULT_CATEGORIES)),
-  currentCategory: DEFAULT_CATEGORIES[0].id,
+  categories: [],
+  currentCategory: null,
   history: [],
   hasSpun: false,
 };
@@ -96,5 +96,65 @@ export const LuckyDrawStorage = {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  },
+
+  // Award CRUD operations
+  addAward: (award: Omit<AwardCategory, 'id' | 'remaining' | 'winners'>) => {
+    const currentState = LuckyDrawStorage.getState();
+    const newAward: AwardCategory = {
+      ...award,
+      id: `award-${Date.now()}`,
+      remaining: award.total,
+      winners: [],
+    };
+    const newCategories = [...currentState.categories, newAward].sort(
+      (a, b) => a.tier - b.tier,
+    );
+    const newState = {
+      ...currentState,
+      categories: newCategories,
+      currentCategory: currentState.currentCategory || newAward.id,
+    };
+    LuckyDrawStorage.saveState(newState);
+    return newState;
+  },
+
+  updateAward: (id: string, updates: Partial<AwardCategory>) => {
+    const currentState = LuckyDrawStorage.getState();
+    const updatedCategories = currentState.categories.map((cat) => {
+      if (cat.id === id) {
+        const newTotal = updates.total ?? cat.total;
+        return {
+          ...cat,
+          ...updates,
+          total: newTotal,
+          remaining: newTotal - cat.winners.length,
+        };
+      }
+      return cat;
+    });
+    const newState = {
+      ...currentState,
+      categories: updatedCategories,
+    };
+    LuckyDrawStorage.saveState(newState);
+    return newState;
+  },
+
+  deleteAward: (id: string) => {
+    const currentState = LuckyDrawStorage.getState();
+    const filteredCategories = currentState.categories.filter(
+      (cat) => cat.id !== id,
+    );
+    const newState = {
+      ...currentState,
+      categories: filteredCategories,
+      currentCategory:
+        currentState.currentCategory === id
+          ? filteredCategories[0]?.id || null
+          : currentState.currentCategory,
+    };
+    LuckyDrawStorage.saveState(newState);
+    return newState;
   },
 };
