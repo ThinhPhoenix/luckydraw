@@ -5,6 +5,7 @@ import {
   useSpring,
   useTransform,
 } from 'framer-motion';
+import { TypewriterText } from '@/components/lucky-draw/TypewriterText';
 import type { AwardCategory } from '@/types/lucky-draw.types';
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
   rotatingName: string;
   isSpinning: boolean;
   currentCategory: AwardCategory | null;
+  onTypingComplete?: () => void;
 }
 
 const TIER_NAMES: Record<number, string> = {
@@ -55,6 +57,7 @@ export function SpinDisplay({
   rotatingName,
   isSpinning,
   currentCategory,
+  onTypingComplete,
 }: Props) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -241,8 +244,18 @@ export function SpinDisplay({
                   textShadow: `0 0 ${15 + Math.abs(y.get()) / 10}px rgba(255,215,0,${0.8 + Math.abs(y.get()) / 500})`,
                 }}
               >
-                <div className="text-6xl font-black font-dancing text-white md:text-8xl text-gold-gradient animate-[pulse_3s_ease-in-out_infinite] leading-tight px-2">
-                  {winner}
+                <div className="text-6xl font-black font-dancing text-white md:text-8xl text-gold-gradient animate-[pulse_3s_ease-in-out_infinite] leading-tight px-2 min-h-[1.2em]">
+                  {winner && (
+                    <TypewriterText
+                      text={winner}
+                      speed={80}
+                      pauseOnLastChars={2}
+                      pauseDuration={300}
+                      onComplete={onTypingComplete}
+                      className="text-gold-gradient"
+                      showCursor
+                    />
+                  )}
                 </div>
                 {/* Enhanced shimmer overlay */}
                 <motion.div

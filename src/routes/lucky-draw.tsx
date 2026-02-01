@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { message } from 'antd';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { PresentationModeView } from '@/components/lucky-draw/PresentationModeView';
 import { SetupModeView } from '@/components/lucky-draw/SetupModeView';
 import { LuckyDrawStorage } from '@/helpers/lucky-draw-storage';
@@ -19,6 +19,12 @@ function LuckyDrawPage() {
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [currentWinner, setCurrentWinner] = useState<string | null>(null);
   const [presentationMode, setPresentationMode] = useState(false);
+
+  // Enhanced Winner Reveal States
+  const [showSpotlight, setShowSpotlight] = useState(false);
+  const [showCoinRain, setShowCoinRain] = useState(false);
+  const [showWinnerModal, setShowWinnerModal] = useState(false);
+  const [isTypingComplete, setIsTypingComplete] = useState(false);
 
   // Load initial state
   useEffect(() => {
@@ -134,14 +140,40 @@ function LuckyDrawPage() {
 
     LuckyDrawStorage.saveState(newState);
     setState(newState);
-    setCurrentWinner(winner.name);
 
+    // Start Enhanced Winner Reveal Sequence
+    // 1. Immediately activate spotlight
+    setShowSpotlight(true);
+    setCurrentWinner(winner.name);
     setIsSpinning(false);
     setShowCelebration(true);
 
-    // Stop celebration after 15s
-    setTimeout(() => setShowCelebration(false), 15000);
+    // 2. Calculate typing duration
+    const typingDuration = (winner.name.length - 2) * 80 + 2 * 300 + 500;
+
+    // 3. Start coin rain when typing completes
+    setTimeout(() => {
+      setShowCoinRain(true);
+    }, typingDuration);
+
+    // 4. Show winner modal after coin rain starts
+    setTimeout(() => {
+      setShowWinnerModal(true);
+    }, typingDuration + 500);
+
+    // 5. Auto-stop celebration effects after 15s
+    setTimeout(() => {
+      setShowCelebration(false);
+    }, 15000);
   };
+
+  // Handle closing the winner modal
+  const handleCloseWinnerModal = useCallback(() => {
+    setShowWinnerModal(false);
+    setShowSpotlight(false);
+    setShowCoinRain(false);
+    setIsTypingComplete(false);
+  }, []);
 
   if (!state)
     return <div className="text-white text-center mt-20">Loading...</div>;
@@ -165,12 +197,17 @@ function LuckyDrawPage() {
           showCelebration={showCelebration}
           currentWinner={currentWinner}
           isAdminOpen={isAdminOpen}
+          showSpotlight={showSpotlight}
+          showCoinRain={showCoinRain}
+          showWinnerModal={showWinnerModal}
           onSpin={spin}
           onUpdate={handleUpdate}
           onSelectCategory={handleSelectCategory}
           onAdminOpen={() => setIsAdminOpen(true)}
           onAdminClose={() => setIsAdminOpen(false)}
           onStartPresentation={() => setPresentationMode(true)}
+          onCloseWinnerModal={handleCloseWinnerModal}
+          onTypingComplete={() => setIsTypingComplete(true)}
         />
       )}
     </div>
