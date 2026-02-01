@@ -144,7 +144,11 @@ export function AdminPanel({ isOpen, onClose, onUpdate }: Props) {
     setCategories(state.categories);
 
     // Reset form
-    setFormData({ name: '', tier: Math.min(categories.length + 1,4), total: 1 });
+    setFormData({
+      name: '',
+      tier: Math.min(categories.length + 1, 4),
+      total: 1,
+    });
     setFormErrors({});
     message.success('Đã thêm giải thưởng mới');
     onUpdate();
@@ -229,61 +233,136 @@ export function AdminPanel({ isOpen, onClose, onUpdate }: Props) {
 
   return (
     <Modal
-      title="Quản trị hệ thống"
+      title={
+        <div className="flex items-center gap-2 text-tet-deep-red font-playfair">
+          <span className="text-xl">🏮</span>
+          <span>Quản trị hệ thống</span>
+          <span className="text-xl">🏮</span>
+        </div>
+      }
       open={isOpen}
       onCancel={onClose}
       footer={null}
       width={600}
+      className="tet-modal"
+      style={{
+        background: '#fffdf5',
+        border: '2px solid #d2042d',
+        borderRadius: '12px',
+        boxShadow: '0 8px 32px rgba(210, 4, 45, 0.3)',
+      }}
     >
       {!isAuthenticated ? (
-        <div className="flex flex-col gap-4">
-          <Input.Password
-            placeholder="Nhập mật khẩu admin"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            onPressEnter={handleLogin}
-          />
-          <Button type="primary" onClick={handleLogin}>
-            Đăng nhập
-          </Button>
+        <div className="flex flex-col gap-6 py-8 px-4">
+          {/* Red Envelope Login Style */}
+          <div className="relative mx-auto w-full max-w-xs">
+            <div
+              className="rounded-lg bg-gradient-to-br from-tet-red to-tet-deep-red p-6 shadow-lg"
+              style={{ boxShadow: '0 8px 24px rgba(210, 4, 45, 0.4)' }}
+            >
+              <div className="mb-4 text-center">
+                <span className="text-4xl">🧧</span>
+              </div>
+              <div className="text-center mb-4">
+                <span className="text-tet-cream font-playfair text-lg">
+                  Nhập mật khẩu để tiếp tục
+                </span>
+              </div>
+              <Input.Password
+                placeholder="Mật khẩu"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                onPressEnter={handleLogin}
+                className="mb-4"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.95)',
+                  border: '1px solid #ffd700',
+                }}
+              />
+              <Button
+                type="primary"
+                onClick={handleLogin}
+                block
+                style={{
+                  background:
+                    'linear-gradient(135deg, #ffd700 0%, #ffbf00 100%)',
+                  border: 'none',
+                  color: '#8b0000',
+                  fontWeight: 'bold',
+                  boxShadow: '0 4px 12px rgba(255, 191, 0, 0.5)',
+                }}
+              >
+                Đăng nhập
+              </Button>
+            </div>
+          </div>
         </div>
       ) : (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 bg-gradient-to-b from-tet-cream/30 to-transparent p-4 rounded-lg">
           {/* Award Management Section - Scrollable */}
-          <div className="rounded border p-4">
-            <h4 className="mb-3 font-bold">Quản lý giải thưởng</h4>
+          <div
+            className="rounded-xl border-2 border-tet-gold/50 bg-white/80 p-4 shadow-lg"
+            style={{ boxShadow: '0 4px 20px rgba(255, 215, 0, 0.2)' }}
+          >
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-2xl">🏆</span>
+              <h4 className="font-bold text-tet-deep-red font-playfair text-lg">
+                Quản lý giải thưởng
+              </h4>
+            </div>
             {hasSpun && (
               <Alert
                 message="Không thể chỉnh sửa sau khi đã quay. Nhấn Reset để thay đổi."
                 type="warning"
                 showIcon
-                className="mb-3"
+                className="mb-3 border-tet-amber bg-gradient-to-r from-tet-amber/10 to-transparent"
+                style={{ borderLeft: '4px solid #ffbf00' }}
               />
             )}
 
             {/* Award List - Scrollable */}
-            <div className="mb-4 max-h-[200px] overflow-y-auto rounded border bg-gray-50 p-2">
+            <div className="mb-4 max-h-[200px] overflow-y-auto rounded-lg border border-tet-gold/30 bg-gradient-to-b from-tet-cream/20 to-white p-2 shadow-inner">
               {categories.length === 0 ? (
-                <div className="p-4 text-center text-gray-500">
-                  Chưa có giải thưởng nào. Hãy thêm giải thưởng mới.
+                <div className="p-4 text-center text-tet-deep-red/70">
+                  <span className="text-2xl block mb-2">🎁</span>
+                  Chưa có giải thưởng nào. Hãy thêm giải thưởng mới!
                 </div>
               ) : (
                 <div className="space-y-2">
                   {categories.map((cat) => (
                     <div
                       key={cat.id}
-                      className="flex items-center gap-2 rounded bg-white p-2 shadow-sm"
+                      className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-white to-tet-cream/30 p-3 shadow-sm border border-tet-gold/20"
+                      style={{ boxShadow: '0 2px 8px rgba(255, 215, 0, 0.15)' }}
                     >
+                      {/* Coin-style tier badge */}
                       <span
-                        className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white ${getTierBadgeColor(cat.tier)}`}
+                        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white shadow-md ${getTierBadgeColor(cat.tier)}`}
+                        style={{
+                          boxShadow:
+                            '0 2px 4px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.3)',
+                          border: '2px solid rgba(255,255,255,0.4)',
+                        }}
                       >
                         {cat.tier}
                       </span>
                       <div className="flex-1 min-w-0">
-                        <div className="truncate font-medium">{cat.name}</div>
-                        <div className="text-xs text-gray-500">
-                          {getTierName(cat.tier)} • {cat.total} giải (
-                          {cat.remaining} còn lại)
+                        <div className="truncate font-medium text-tet-deep-red">
+                          {cat.name}
+                        </div>
+                        <div className="text-xs text-tet-deep-red/60">
+                          <span className="font-semibold">
+                            {getTierName(cat.tier)}
+                          </span>
+                          {' • '}
+                          <span className="text-tet-amber font-bold">
+                            {cat.total} giải
+                          </span>
+                          {' ('}
+                          <span className="text-green-600">
+                            {cat.remaining} còn lại
+                          </span>
+                          {')'}
                         </div>
                       </div>
                       <Button
@@ -316,15 +395,18 @@ export function AdminPanel({ isOpen, onClose, onUpdate }: Props) {
             </div>
 
             {/* Add/Edit Form */}
-            <div className="rounded border bg-gray-50 p-3">
-              <div className="mb-2 font-medium">
-                {isEditing ? 'Chỉnh sửa giải thưởng' : 'Thêm giải thưởng mới'}
+            <div className="rounded-xl border border-tet-gold/30 bg-gradient-to-br from-tet-cream/40 to-white p-4 shadow-md">
+              <div className="mb-3 font-medium text-tet-deep-red flex items-center gap-2">
+                <span className="text-lg">{isEditing ? '✏️' : '➕'}</span>
+                <span className="font-playfair">
+                  {isEditing ? 'Chỉnh sửa giải thưởng' : 'Thêm giải thưởng mới'}
+                </span>
               </div>
               <div className="space-y-3">
                 <div>
                   <label
                     htmlFor="award-name"
-                    className="mb-1 block text-sm text-gray-600"
+                    className="mb-1 block text-sm font-medium text-tet-deep-red/80"
                   >
                     Tên giải thưởng
                   </label>
@@ -336,9 +418,10 @@ export function AdminPanel({ isOpen, onClose, onUpdate }: Props) {
                     onChange={(e) =>
                       setFormData({ ...formData, name: e.target.value })
                     }
+                    style={{ borderColor: 'rgba(255, 215, 0, 0.5)' }}
                   />
                   {formErrors.name && (
-                    <div className="mt-1 text-xs text-red-500">
+                    <div className="mt-1 text-xs text-tet-red font-medium">
                       {formErrors.name}
                     </div>
                   )}
@@ -347,7 +430,7 @@ export function AdminPanel({ isOpen, onClose, onUpdate }: Props) {
                   <div className="flex-1">
                     <label
                       htmlFor="award-tier"
-                      className="mb-1 block text-sm text-gray-600"
+                      className="mb-1 block text-sm font-medium text-tet-deep-red/80"
                     >
                       Cấp độ giải
                     </label>
@@ -364,15 +447,16 @@ export function AdminPanel({ isOpen, onClose, onUpdate }: Props) {
                         label: (
                           <div className="flex items-center gap-2">
                             <span
-                              className={`h-3 w-3 rounded-full ${opt.color}`}
+                              className={`h-3 w-3 rounded-full shadow-sm ${opt.color}`}
+                              style={{ boxShadow: '0 1px 2px rgba(0,0,0,0.2)' }}
                             />
-                            <span>{opt.label}</span>
+                            <span className="font-medium">{opt.label}</span>
                           </div>
                         ),
                       }))}
                     />
                     {formErrors.tier && (
-                      <div className="mt-1 text-xs text-red-500">
+                      <div className="mt-1 text-xs text-tet-red font-medium">
                         {formErrors.tier}
                       </div>
                     )}
@@ -380,7 +464,7 @@ export function AdminPanel({ isOpen, onClose, onUpdate }: Props) {
                   <div className="flex-1">
                     <label
                       htmlFor="award-total"
-                      className="mb-1 block text-sm text-gray-600"
+                      className="mb-1 block text-sm font-medium text-tet-deep-red/80"
                     >
                       Số lượng
                     </label>
@@ -393,15 +477,16 @@ export function AdminPanel({ isOpen, onClose, onUpdate }: Props) {
                         setFormData({ ...formData, total: value || 1 })
                       }
                       className="w-full"
+                      style={{ borderColor: 'rgba(255, 215, 0, 0.5)' }}
                     />
                     {formErrors.total && (
-                      <div className="mt-1 text-xs text-red-500">
+                      <div className="mt-1 text-xs text-tet-red font-medium">
                         {formErrors.total}
                       </div>
                     )}
                   </div>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 pt-2">
                   {isEditing ? (
                     <>
                       <Button
@@ -409,11 +494,25 @@ export function AdminPanel({ isOpen, onClose, onUpdate }: Props) {
                         onClick={handleUpdateAward}
                         disabled={hasSpun}
                         className="flex-1"
+                        style={{
+                          background:
+                            'linear-gradient(135deg, #ffd700 0%, #ffbf00 100%)',
+                          border: 'none',
+                          color: '#8b0000',
+                          fontWeight: 'bold',
+                        }}
                       >
-                        Cập nhật
+                        ✓ Cập nhật
                       </Button>
-                      <Button onClick={handleCancelEdit} className="flex-1">
-                        Hủy
+                      <Button
+                        onClick={handleCancelEdit}
+                        className="flex-1"
+                        style={{
+                          border: '1px solid #d2042d',
+                          color: '#d2042d',
+                        }}
+                      >
+                        ✕ Hủy
                       </Button>
                     </>
                   ) : (
@@ -423,6 +522,14 @@ export function AdminPanel({ isOpen, onClose, onUpdate }: Props) {
                       onClick={handleAddAward}
                       disabled={hasSpun}
                       block
+                      style={{
+                        background:
+                          'linear-gradient(135deg, #ffd700 0%, #ffbf00 100%)',
+                        border: 'none',
+                        color: '#8b0000',
+                        fontWeight: 'bold',
+                        boxShadow: '0 4px 12px rgba(255, 191, 0, 0.4)',
+                      }}
                     >
                       Thêm giải thưởng
                     </Button>
@@ -432,38 +539,104 @@ export function AdminPanel({ isOpen, onClose, onUpdate }: Props) {
             </div>
           </div>
 
-          <div className="rounded border p-4">
-            <h4 className="mb-2 font-bold">Quản lý dữ liệu</h4>
+          {/* Data Management Section */}
+          <div className="rounded-xl border border-tet-amber/30 bg-gradient-to-r from-tet-cream/30 to-white p-4 shadow-sm">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-xl">📋</span>
+              <h4 className="font-bold text-tet-deep-red font-playfair">
+                Quản lý dữ liệu
+              </h4>
+            </div>
             <Upload
               beforeUpload={handleFileUpload}
               showUploadList={false}
               accept=".txt,.csv"
             >
-              <Button block>Nhập danh sách nhân viên (.txt)</Button>
+              <Button
+                block
+                style={{
+                  background:
+                    'linear-gradient(135deg, #fff8e7 0%, #fffdd0 100%)',
+                  border: '1px solid #d2042d',
+                  color: '#8b0000',
+                }}
+              >
+                📥 Nhập danh sách nhân viên (.txt)
+              </Button>
             </Upload>
-            <div className="mt-1 text-xs text-gray-500">
+            <div className="mt-2 text-xs text-tet-deep-red/60 flex items-center gap-1">
+              <span>💡</span>
               File .txt, mỗi tên một dòng
             </div>
           </div>
 
-          <div className="rounded border p-4">
-            <h4 className="mb-2 font-bold">Xuất kết quả</h4>
-            <Button block onClick={handleExport}>
-              Xuất CSV người trúng giải
+          {/* Export Section */}
+          <div className="rounded-xl border border-tet-gold/40 bg-gradient-to-r from-tet-cream/40 to-white p-4 shadow-sm">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-xl">📊</span>
+              <h4 className="font-bold text-tet-deep-red font-playfair">
+                Xuất kết quả
+              </h4>
+            </div>
+            <Button
+              block
+              onClick={handleExport}
+              style={{
+                background: 'linear-gradient(135deg, #ffd700 0%, #ffbf00 100%)',
+                border: 'none',
+                color: '#8b0000',
+                fontWeight: 'bold',
+                boxShadow: '0 4px 12px rgba(255, 191, 0, 0.4)',
+              }}
+            >
+              📤 Xuất CSV người trúng giải
             </Button>
           </div>
 
-          <div className="rounded border border-red-200 bg-red-50 p-4">
-            <h4 className="mb-2 font-bold text-red-600">Vùng nguy hiểm</h4>
+          {/* Danger Zone - Styled with Tet warning elements */}
+          <div
+            className="rounded-xl border-2 border-tet-red bg-gradient-to-br from-red-50 to-tet-red/10 p-4 shadow-md"
+            style={{ boxShadow: '0 4px 16px rgba(210, 4, 45, 0.2)' }}
+          >
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-2xl animate-pulse">⚠️</span>
+              <h4 className="font-bold text-tet-red font-playfair text-lg">
+                Vùng nguy hiểm
+              </h4>
+            </div>
+            <div className="mb-3 p-2 rounded bg-white/60 border border-tet-red/20 text-sm text-tet-deep-red">
+              <span className="font-bold">⚡ Cẩn thận:</span> Hành động này sẽ
+              xóa tất cả dữ liệu và không thể hoàn tác!
+            </div>
             <Popconfirm
-              title="Xóa toàn bộ dữ liệu?"
-              description="Hành động này không thể hoàn tác"
+              title={
+                <span className="text-tet-red font-bold">
+                  Xóa toàn bộ dữ liệu?
+                </span>
+              }
+              description={
+                <span className="text-tet-deep-red">
+                  Hành động này không thể hoàn tác
+                </span>
+              }
               onConfirm={handleReset}
               okText="Xóa"
               cancelText="Hủy"
+              okButtonProps={{
+                style: { background: '#d2042d', borderColor: '#d2042d' },
+              }}
             >
-              <Button danger block>
-                Reset toàn bộ hệ thống
+              <Button
+                danger
+                block
+                style={{
+                  background:
+                    'linear-gradient(135deg, #d2042d 0%, #8b0000 100%)',
+                  border: 'none',
+                  boxShadow: '0 4px 12px rgba(210, 4, 45, 0.4)',
+                }}
+              >
+                🗑️ Reset toàn bộ hệ thống
               </Button>
             </Popconfirm>
           </div>
