@@ -144,7 +144,7 @@ export function AdminPanel({ isOpen, onClose, onUpdate }: Props) {
     setCategories(state.categories);
 
     // Reset form
-    setFormData({ name: '', tier: categories.length + 1, total: 1 });
+    setFormData({ name: '', tier: Math.min(categories.length + 1,4), total: 1 });
     setFormErrors({});
     message.success('Đã thêm giải thưởng mới');
     onUpdate();
