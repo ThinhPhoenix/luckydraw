@@ -196,7 +196,7 @@ export function SpinDisplay({
         }}
       />
 
-      <div className="text-center w-full relative [transform:translateZ(30px)]">
+      <div className="text-center w-full relative [transform:translateZ(30px)] px-4">
         <AnimatePresence mode="wait">
           {winner ? (
             <motion.div
@@ -241,7 +241,7 @@ export function SpinDisplay({
                   textShadow: `0 0 ${15 + Math.abs(y.get()) / 10}px rgba(255,215,0,${0.8 + Math.abs(y.get()) / 500})`,
                 }}
               >
-                <div className="text-6xl font-black font-dancing text-white md:text-8xl text-gold-gradient animate-[pulse_3s_ease-in-out_infinite]">
+                <div className="text-6xl font-black font-dancing text-white md:text-8xl text-gold-gradient animate-[pulse_3s_ease-in-out_infinite] leading-tight px-2">
                   {winner}
                 </div>
                 {/* Enhanced shimmer overlay */}
@@ -284,7 +284,7 @@ export function SpinDisplay({
               </motion.div>
 
               {/* Slot Machine Effect Container */}
-              <div className="relative h-32 w-full overflow-hidden flex items-center justify-center [transform:translateZ(25px)]">
+              <div className="relative h-40 w-full overflow-hidden flex items-center justify-center [transform:translateZ(25px)]">
                 <motion.div
                   key={rotatingName}
                   initial={{ y: 50, opacity: 0.5, filter: 'blur(5px)' }}
@@ -292,7 +292,7 @@ export function SpinDisplay({
                   exit={{ y: -50, opacity: 0.5, filter: 'blur(5px)' }}
                   transition={{ duration: 0.1 }}
                   className={`
-                      text-5xl font-bold font-dancing text-white md:text-7xl absolute
+                      text-5xl font-bold font-dancing text-white md:text-7xl absolute leading-tight px-2
                       ${isSpinning ? 'text-tet-gold/90' : 'text-white'}
                     `}
                 >
