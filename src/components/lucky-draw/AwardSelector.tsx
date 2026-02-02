@@ -42,7 +42,7 @@ export function AwardSelector({
   const sortedCategories = [...categories].sort((a, b) => a.tier - b.tier);
 
   return (
-    <div className="flex w-full flex-wrap justify-center gap-3 px-4 py-3">
+    <div className="flex w-full flex-nowrap gap-3 overflow-x-auto px-4 py-3 scrollbar-hide scroll-smooth snap-x snap-mandatory">
       {sortedCategories.map((cat) => {
         const isActive = cat.id === currentId;
         const isFull = cat.remaining === 0;
@@ -53,7 +53,7 @@ export function AwardSelector({
             onClick={() => onSelect(cat.id)}
             disabled={disabled || (isFull && !isActive)}
             className={`
-              !h-auto !min-w-[160px] !rounded-xl !border-2 !px-4 !py-2 !text-base !font-semibold transition-all duration-300 font-playfair relative overflow-hidden group
+              !h-auto !w-[calc(25%-9px)] flex-shrink-0 snap-center !rounded-xl !border-2 !px-4 !py-2 !text-base !font-semibold transition-all duration-300 font-playfair relative overflow-hidden group
               ${
                 isActive
                   ? '!border-tet-gold !bg-tet-deep-red !text-tet-gold shadow-[0_0_20px_rgba(255,215,0,0.6)] scale-105 animate-[pulse_2s_infinite]'
