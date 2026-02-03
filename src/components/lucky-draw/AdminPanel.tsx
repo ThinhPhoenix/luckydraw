@@ -1,6 +1,5 @@
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import {
-  Alert,
   Button,
   Input,
   InputNumber,
@@ -42,7 +41,6 @@ export function AdminPanel({ isOpen, onClose, onUpdate }: Props) {
   const [password, setPassword] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [categories, setCategories] = useState<AwardCategory[]>([]);
-  const [hasSpun, setHasSpun] = useState(false);
 
   // Form state for adding/editing awards
   const [isEditing, setIsEditing] = useState(false);
@@ -58,7 +56,6 @@ export function AdminPanel({ isOpen, onClose, onUpdate }: Props) {
     if (isAuthenticated && isOpen) {
       const state = LuckyDrawStorage.getState();
       setCategories(state.categories);
-      setHasSpun(state.hasSpun);
     }
   }, [isAuthenticated, isOpen]);
 
@@ -310,16 +307,6 @@ export function AdminPanel({ isOpen, onClose, onUpdate }: Props) {
                 Quản lý giải thưởng
               </h4>
             </div>
-            {hasSpun && (
-              <Alert
-                message="Không thể chỉnh sửa sau khi đã quay. Nhấn Reset để thay đổi."
-                type="warning"
-                showIcon
-                className="mb-3 border-tet-amber bg-gradient-to-r from-tet-amber/10 to-transparent"
-                style={{ borderLeft: '4px solid #ffbf00' }}
-              />
-            )}
-
             {/* Award List - Scrollable */}
             <div className="mb-4 max-h-[200px] overflow-y-auto rounded-lg border border-tet-gold/30 bg-gradient-to-b from-tet-cream/20 to-white p-2 shadow-inner">
               {categories.length === 0 ? (
@@ -369,7 +356,6 @@ export function AdminPanel({ isOpen, onClose, onUpdate }: Props) {
                         type="text"
                         size="small"
                         icon={<EditOutlined />}
-                        disabled={hasSpun}
                         onClick={() => handleEditAward(cat)}
                       />
                       <Popconfirm
@@ -378,14 +364,14 @@ export function AdminPanel({ isOpen, onClose, onUpdate }: Props) {
                         onConfirm={() => handleDeleteAward(cat.id)}
                         okText="Xóa"
                         cancelText="Hủy"
-                        disabled={hasSpun || cat.winners.length > 0}
+                        disabled={cat.winners.length > 0}
                       >
                         <Button
                           type="text"
                           size="small"
                           danger
                           icon={<DeleteOutlined />}
-                          disabled={hasSpun || cat.winners.length > 0}
+                          disabled={cat.winners.length > 0}
                         />
                       </Popconfirm>
                     </div>
@@ -414,7 +400,6 @@ export function AdminPanel({ isOpen, onClose, onUpdate }: Props) {
                     id="award-name"
                     placeholder="Ví dụ: Giải Nhất"
                     value={formData.name}
-                    disabled={hasSpun}
                     onChange={(e) =>
                       setFormData({ ...formData, name: e.target.value })
                     }
@@ -437,7 +422,6 @@ export function AdminPanel({ isOpen, onClose, onUpdate }: Props) {
                     <Select
                       id="award-tier"
                       value={formData.tier}
-                      disabled={hasSpun}
                       onChange={(value) =>
                         setFormData({ ...formData, tier: value })
                       }
@@ -472,7 +456,6 @@ export function AdminPanel({ isOpen, onClose, onUpdate }: Props) {
                       id="award-total"
                       min={1}
                       value={formData.total}
-                      disabled={hasSpun}
                       onChange={(value) =>
                         setFormData({ ...formData, total: value || 1 })
                       }
@@ -492,7 +475,6 @@ export function AdminPanel({ isOpen, onClose, onUpdate }: Props) {
                       <Button
                         type="primary"
                         onClick={handleUpdateAward}
-                        disabled={hasSpun}
                         className="flex-1"
                         style={{
                           background:
@@ -520,7 +502,6 @@ export function AdminPanel({ isOpen, onClose, onUpdate }: Props) {
                       type="primary"
                       icon={<PlusOutlined />}
                       onClick={handleAddAward}
-                      disabled={hasSpun}
                       block
                       style={{
                         background:
