@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkreact=globalThis.webpackChunkreact||[]).push([["971"],{9830(e,t,a){a.r(t),a.d(t,{component:()=>u});var c=a(9974),r=a(2252),n=a(8390);function u(){let e=(0,r.r)();return(0,n.useEffect)(()=>{e.navigate({to:"/lucky-draw"})},[]),(0,c.jsx)("div",{})}}}]);
