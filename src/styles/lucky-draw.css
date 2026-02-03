@@ -602,6 +602,27 @@
   shape-rendering: geometricPrecision;
 }
 
+/* CSS fallback paper fiber texture for Safari and browsers without SVG pattern support */
+.paper-fiber-css-fallback {
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      rgba(0, 0, 0, 0.04) 0px,
+      transparent 2px,
+      transparent 12px,
+      rgba(0, 0, 0, 0.04) 14px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(0, 0, 0, 0.04) 0px,
+      transparent 2px,
+      transparent 12px,
+      rgba(0, 0, 0, 0.04) 14px
+    );
+  background-size: 20px 20px;
+  mix-blend-mode: multiply;
+}
+
 /* Enhanced cloud drift with cross-browser GPU acceleration */
 .cloud-drift {
   will-change: transform;
@@ -661,5 +682,196 @@
 @-moz-document url-prefix() {
   .paper-cut-cloud {
     shape-rendering: geometricPrecision;
+  }
+}
+
+/* ============================================
+   RUYI CLOUD ANIMATIONS & STYLES
+   ============================================ */
+
+/* Ruyi drift animation - horizontal with vertical bob and rotation */
+@keyframes ruyi-drift {
+  0% {
+    transform: translateX(-30vw) translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  25% {
+    transform: translateX(25vw) translateY(-15px) rotate(3deg);
+  }
+  50% {
+    transform: translateX(50vw) translateY(0) rotate(0deg);
+  }
+  75% {
+    transform: translateX(75vw) translateY(15px) rotate(-3deg);
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(130vw) translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+}
+
+/* WebKit ruyi drift */
+@-webkit-keyframes ruyi-drift {
+  0% {
+    -webkit-transform: translateX(-30vw) translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  25% {
+    -webkit-transform: translateX(25vw) translateY(-15px) rotate(3deg);
+  }
+  50% {
+    -webkit-transform: translateX(50vw) translateY(0) rotate(0deg);
+  }
+  75% {
+    -webkit-transform: translateX(75vw) translateY(15px) rotate(-3deg);
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translateX(130vw) translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+}
+
+/* Mozilla ruyi drift */
+@-moz-keyframes ruyi-drift {
+  0% {
+    -moz-transform: translateX(-30vw) translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  25% {
+    -moz-transform: translateX(25vw) translateY(-15px) rotate(3deg);
+  }
+  50% {
+    -moz-transform: translateX(50vw) translateY(0) rotate(0deg);
+  }
+  75% {
+    -moz-transform: translateX(75vw) translateY(15px) rotate(-3deg);
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    -moz-transform: translateX(130vw) translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+}
+
+/* Ruyi rotation animation - gentle sway */
+@keyframes ruyi-rotate {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(5deg);
+  }
+  75% {
+    transform: rotate(-5deg);
+  }
+}
+
+/* WebKit ruyi rotation */
+@-webkit-keyframes ruyi-rotate {
+  0%,
+  100% {
+    -webkit-transform: rotate(0deg);
+  }
+  25% {
+    -webkit-transform: rotate(5deg);
+  }
+  75% {
+    -webkit-transform: rotate(-5deg);
+  }
+}
+
+/* Mozilla ruyi rotation */
+@-moz-keyframes ruyi-rotate {
+  0%,
+  100% {
+    -moz-transform: rotate(0deg);
+  }
+  25% {
+    -moz-transform: rotate(5deg);
+  }
+  75% {
+    -moz-transform: rotate(-5deg);
+  }
+}
+
+/* Ruyi cloud animation wrapper - outer div handles horizontal drift */
+.ruyi-cloud-wrapper {
+  position: absolute;
+  will-change: transform;
+  animation: ruyi-drift var(--drift-duration, 35s) linear infinite;
+  animation-delay: var(--drift-delay, 0s);
+  animation-fill-mode: both;
+  /* Prevent parallax from interfering */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  /* Create stacking context */
+  isolation: isolate;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+}
+
+/* Ruyi cloud inner wrapper - handles rotation animation */
+.ruyi-cloud-inner {
+  will-change: transform;
+  animation: ruyi-rotate var(--rotate-duration, 52.5s) ease-in-out infinite;
+  animation-delay: var(--rotate-delay, -5s);
+  animation-fill-mode: both;
+  /* Ensure rotation works independently */
+  transform-origin: center center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+}
+
+/* Ensure SVG within inner wrapper displays properly */
+.ruyi-cloud-inner > svg {
+  display: block;
+}
+
+/* Ruyi cloud SVG styling */
+.ruyi-cloud {
+  filter: drop-shadow(0px 8px 6px rgba(0, 0, 0, 0.25));
+  shape-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ruyi cloud inner detail swirls */
+.ruyi-cloud g[stroke] {
+  vector-effect: non-scaling-stroke;
+}
+
+/* Safari-specific: Disable will-change to prevent flickering */
+@supports (-webkit-touch-callout: none) {
+  .ruyi-cloud-wrapper {
+    will-change: auto;
+  }
+
+  .ruyi-cloud-inner {
+    will-change: auto;
+  }
+
+  .ruyi-cloud {
+    shape-rendering: crispEdges;
   }
 }

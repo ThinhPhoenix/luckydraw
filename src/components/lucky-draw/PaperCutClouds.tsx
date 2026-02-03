@@ -8,31 +8,55 @@ interface CloudConfig {
   scale: number;
   duration: number;
   delay: number;
-  color: string;
+  gradientId: string;
+  strokeColor: string;
+  detailStrokeColor: string;
   layer: 1 | 2;
 }
 
-// Redesigned with smooth cubic Bezier curves for paper-cut aesthetic
-const CLOUD_PATHS = [
-  // Cloud 1: Classic fluffy - smooth continuous curves
-  'M30,75 C45,55 65,50 85,55 C105,45 130,40 155,50 C180,45 205,55 220,75 C235,90 230,110 215,120 C195,135 165,130 145,125 C125,135 95,130 75,125 C55,130 35,125 25,115 C15,105 15,90 30,75Z',
+// Ruyi auspicious cloud body path
+const RUYI_BODY_PATH =
+  'M 40,80 C 10,80 0,50 30,35 C 30,10 70,0 90,25 C 100,5 150,5 160,35 C 190,20 200,60 150,85 Q 120,100 80,85 Q 60,110 40,80 Z';
 
-  // Cloud 2: Elegant layered - gentle waves
-  'M40,70 C55,50 80,55 100,50 C125,42 155,48 180,55 C205,50 225,65 230,85 C235,105 220,120 200,125 C175,132 145,128 120,130 C95,128 65,132 45,125 C25,118 20,100 30,85 C35,78 38,73 40,70Z',
-
-  // Cloud 3: Organic flow - Asian paper-cut inspired
-  'M35,80 C50,60 75,65 95,58 C120,50 150,55 175,60 C200,55 225,70 235,90 C240,108 225,125 205,130 C180,138 150,132 125,135 C100,132 70,138 50,130 C30,122 20,105 25,88 C28,82 32,78 35,80Z',
-
-  // Cloud 4: Artistic layered - multiple soft peaks
-  'M45,75 C60,58 85,62 105,55 C130,48 160,52 185,58 C210,52 235,68 240,88 C245,108 230,122 210,128 C185,135 155,130 130,132 C105,130 75,135 55,128 C35,120 25,102 30,85 C33,78 40,75 45,75Z',
+// Internal decorative swirl patterns (3 curves)
+const RUYI_DETAIL_PATHS = [
+  'M 45,70 C 30,70 30,50 45,45 C 55,40 65,55 55,65', // Left swirl
+  'M 90,35 C 80,30 80,50 95,55 C 110,60 115,40 100,30', // Center swirl
+  'M 145,70 C 160,65 165,45 150,40 C 135,35 130,55 140,65', // Right swirl
 ];
 
-const CLOUD_COLORS = [
-  '#f4e4bc', // Rice paper
-  '#ffd700', // Gold
-  '#fff8dc', // Cream
-  '#f5f5dc', // Beige
-  '#faf0e6', // Linen
+// Ruyi cloud styles with appropriate stroke contrasts
+const RUYI_STYLES = [
+  {
+    gradientId: 'grad-ruyi-rice-paper',
+    strokeColor: '#851718', // Dark red stroke
+    detailStrokeColor: '#851718', // Dark red details
+    name: 'ricePaper',
+  },
+  {
+    gradientId: 'grad-ruyi-gold',
+    strokeColor: '#ffffff', // White stroke
+    detailStrokeColor: '#ffffff', // White details
+    name: 'gold',
+  },
+  {
+    gradientId: 'grad-ruyi-cream',
+    strokeColor: '#d4af37', // Gold stroke
+    detailStrokeColor: '#d4af37', // Gold details
+    name: 'cream',
+  },
+  {
+    gradientId: 'grad-ruyi-beige',
+    strokeColor: '#8b4513', // Saddle brown stroke
+    detailStrokeColor: '#8b4513', // Saddle brown details
+    name: 'beige',
+  },
+  {
+    gradientId: 'grad-ruyi-linen',
+    strokeColor: '#cd853f', // Peru stroke
+    detailStrokeColor: '#cd853f', // Peru details
+    name: 'linen',
+  },
 ];
 
 export function PaperCutClouds() {
@@ -40,6 +64,7 @@ export function PaperCutClouds() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [clouds, setClouds] = useState<CloudConfig[]>([]);
   const [isSafari, setIsSafari] = useState(false);
+  const [useSimpleTexture, setUseSimpleTexture] = useState(false);
 
   // Detect Safari browser on mount
   useEffect(() => {
@@ -47,6 +72,8 @@ export function PaperCutClouds() {
       navigator.userAgent,
     );
     setIsSafari(isSafariBrowser);
+    // Use simple CSS texture fallback for Safari
+    setUseSimpleTexture(isSafariBrowser);
   }, []);
 
   // Generate clouds on mount
@@ -56,31 +83,41 @@ export function PaperCutClouds() {
       let id = 0;
 
       // Layer 1: Background giants (8 clouds) - full page coverage including header
+      // Ruyi clouds are 10% larger: 0.9-1.5x (vs old 0.8-1.5x)
       for (let i = 0; i < 8; i++) {
+        const style =
+          RUYI_STYLES[Math.floor(Math.random() * RUYI_STYLES.length)];
         newClouds.push({
           id: id++,
-          path: CLOUD_PATHS[Math.floor(Math.random() * CLOUD_PATHS.length)],
+          path: RUYI_BODY_PATH,
           x: Math.random() * 100,
           y: Math.random() * 85, // Full coverage 0-85% (includes header)
-          scale: 0.8 + Math.random() * 0.7, // 0.8-1.5x
+          scale: 0.9 + Math.random() * 0.6, // 0.9-1.5x
           duration: 35 + Math.random() * 10, // 35-45s
           delay: -(Math.random() * 45), // Random negative delay for spread
-          color: CLOUD_COLORS[Math.floor(Math.random() * CLOUD_COLORS.length)],
+          gradientId: style.gradientId,
+          strokeColor: style.strokeColor,
+          detailStrokeColor: style.detailStrokeColor,
           layer: 1,
         });
       }
 
       // Layer 2: Midground detail (6 clouds) - overlapping coverage
+      // Ruyi clouds are 10% larger: 0.5-0.9x (vs old 0.4-0.9x)
       for (let i = 0; i < 6; i++) {
+        const style =
+          RUYI_STYLES[Math.floor(Math.random() * RUYI_STYLES.length)];
         newClouds.push({
           id: id++,
-          path: CLOUD_PATHS[Math.floor(Math.random() * CLOUD_PATHS.length)],
+          path: RUYI_BODY_PATH,
           x: Math.random() * 100,
           y: Math.random() * 80 + 5, // Coverage 5-85% (includes header area)
-          scale: 0.4 + Math.random() * 0.5, // 0.4-0.9x
+          scale: 0.5 + Math.random() * 0.4, // 0.5-0.9x
           duration: 25 + Math.random() * 10, // 25-35s (faster)
           delay: -(Math.random() * 35),
-          color: CLOUD_COLORS[Math.floor(Math.random() * CLOUD_COLORS.length)],
+          gradientId: style.gradientId,
+          strokeColor: style.strokeColor,
+          detailStrokeColor: style.detailStrokeColor,
           layer: 2,
         });
       }
@@ -119,30 +156,126 @@ export function PaperCutClouds() {
       ref={containerRef}
       className="fixed inset-0 pointer-events-none overflow-hidden -z-10"
     >
-      {/* SVG Filters for paper texture and shadows */}
+      {/* SVG Filters and Gradients for paper texture and shadows */}
       <svg className="absolute w-0 h-0" aria-hidden="true">
         <defs>
-          <filter id="paper-texture">
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.8"
-              numOctaves="3"
-              result="noise"
+          {/* Rice Paper: Light top-left, warm center, darker edge */}
+          <radialGradient id="grad-ruyi-rice-paper" cx="45%" cy="40%" r="75%">
+            <stop offset="0%" stopColor="#fffef5" />
+            <stop offset="50%" stopColor="#f4e4bc" />
+            <stop offset="100%" stopColor="#e0d0a0" />
+          </radialGradient>
+
+          {/* Gold: Bright center, rich gold, bronze edge */}
+          <radialGradient id="grad-ruyi-gold" cx="30%" cy="30%" r="80%">
+            <stop offset="0%" stopColor="#fff8dc" />
+            <stop offset="40%" stopColor="#ffd700" />
+            <stop offset="100%" stopColor="#daa520" />
+          </radialGradient>
+
+          {/* Cream: Soft white center, creamy middle, warm edge */}
+          <radialGradient id="grad-ruyi-cream" cx="45%" cy="45%" r="75%">
+            <stop offset="0%" stopColor="#fffdf5" />
+            <stop offset="60%" stopColor="#fff8dc" />
+            <stop offset="100%" stopColor="#f0e68c" />
+          </radialGradient>
+
+          {/* Beige: Light top, natural beige, earthy edge */}
+          <radialGradient id="grad-ruyi-beige" cx="50%" cy="35%" r="70%">
+            <stop offset="0%" stopColor="#fffdf0" />
+            <stop offset="55%" stopColor="#f5f5dc" />
+            <stop offset="100%" stopColor="#d4c4a8" />
+          </radialGradient>
+
+          {/* Linen: Soft white, linen tone, grayish edge */}
+          <radialGradient id="grad-ruyi-linen" cx="35%" cy="50%" r="75%">
+            <stop offset="0%" stopColor="#fffdf5" />
+            <stop offset="50%" stopColor="#faf0e6" />
+            <stop offset="100%" stopColor="#e8e0d0" />
+          </radialGradient>
+
+          {/* Paper fiber texture pattern - 6-8% visibility */}
+          <pattern
+            id="paper-fiber"
+            x="0"
+            y="0"
+            width="30"
+            height="30"
+            patternUnits="userSpaceOnUse"
+          >
+            <rect width="30" height="30" fill="transparent" />
+            {/* Horizontal fibers */}
+            <path
+              d="M0,8 Q15,3 30,8"
+              stroke="rgba(0,0,0,0.06)"
+              strokeWidth="0.8"
+              fill="none"
             />
-            <feColorMatrix
-              type="matrix"
-              values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.08 0"
-              in="noise"
-              result="coloredNoise"
+            <path
+              d="M0,15 Q15,20 30,15"
+              stroke="rgba(0,0,0,0.04)"
+              strokeWidth="0.6"
+              fill="none"
             />
-            <feComposite
-              operator="in"
-              in="coloredNoise"
-              in2="SourceGraphic"
-              result="composite"
+            <path
+              d="M0,22 Q15,17 30,22"
+              stroke="rgba(0,0,0,0.06)"
+              strokeWidth="0.8"
+              fill="none"
             />
-            <feBlend mode="multiply" in="composite" in2="SourceGraphic" />
-          </filter>
+            {/* Vertical fibers */}
+            <path
+              d="M8,0 Q3,15 8,30"
+              stroke="rgba(0,0,0,0.04)"
+              strokeWidth="0.6"
+              fill="none"
+            />
+            <path
+              d="M15,0 Q20,15 15,30"
+              stroke="rgba(0,0,0,0.06)"
+              strokeWidth="0.8"
+              fill="none"
+            />
+            <path
+              d="M22,0 Q27,15 22,30"
+              stroke="rgba(0,0,0,0.04)"
+              strokeWidth="0.6"
+              fill="none"
+            />
+            {/* Cross fibers */}
+            <path
+              d="M0,0 Q15,15 30,0"
+              stroke="rgba(0,0,0,0.03)"
+              strokeWidth="0.5"
+              fill="none"
+            />
+            <path
+              d="M0,30 Q15,15 30,30"
+              stroke="rgba(0,0,0,0.03)"
+              strokeWidth="0.5"
+              fill="none"
+            />
+          </pattern>
+
+          {/* Inner vignette shadow (12% dark at edges) */}
+          <radialGradient id="grad-inner-shadow" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stopColor="transparent" />
+            <stop offset="85%" stopColor="transparent" />
+            <stop offset="100%" stopColor="rgba(0,0,0,0.12)" />
+          </radialGradient>
+
+          {/* Top-left highlight stroke */}
+          <linearGradient
+            id="grad-highlight"
+            x1="0%"
+            y1="0%"
+            x2="100%"
+            y2="100%"
+          >
+            <stop offset="0%" stopColor="rgba(255,255,255,0.5)" />
+            <stop offset="40%" stopColor="rgba(255,255,255,0.2)" />
+            <stop offset="100%" stopColor="transparent" />
+          </linearGradient>
 
           {/* Enhanced drop shadow filter with better cross-browser compatibility */}
           <filter
@@ -172,7 +305,12 @@ export function PaperCutClouds() {
         style={getParallaxStyle(1)}
       >
         {layer1Clouds.map((cloud) => (
-          <PaperCutCloud key={cloud.id} config={cloud} isSafari={isSafari} />
+          <RuyiCloud
+            key={cloud.id}
+            config={cloud}
+            isSafari={isSafari}
+            useSimpleTexture={useSimpleTexture}
+          />
         ))}
       </div>
 
@@ -182,7 +320,12 @@ export function PaperCutClouds() {
         style={getParallaxStyle(2)}
       >
         {layer2Clouds.map((cloud) => (
-          <PaperCutCloud key={cloud.id} config={cloud} isSafari={isSafari} />
+          <RuyiCloud
+            key={cloud.id}
+            config={cloud}
+            isSafari={isSafari}
+            useSimpleTexture={useSimpleTexture}
+          />
         ))}
       </div>
 
@@ -197,68 +340,123 @@ export function PaperCutClouds() {
   );
 }
 
-function PaperCutCloud({
+function RuyiCloud({
   config,
   isSafari,
+  useSimpleTexture,
 }: {
   config: CloudConfig;
   isSafari: boolean;
+  useSimpleTexture: boolean;
 }) {
-  const { path, x, y, scale, duration, delay, color } = config;
+  const {
+    path,
+    x,
+    y,
+    scale,
+    duration,
+    delay,
+    gradientId,
+    strokeColor,
+    detailStrokeColor,
+  } = config;
 
+  // Using original duration values for elegant, slow animation
   return (
     <div
-      className="absolute cloud-drift"
-      style={{
-        left: `${x}%`,
-        top: `${y}%`,
-        animation: `cloud-drift ${duration}s linear infinite`,
-        animationDelay: `${delay}s`,
-      }}
+      className="absolute ruyi-cloud-wrapper"
+      style={
+        {
+          left: `${x}%`,
+          top: `${y}%`,
+          '--drift-duration': `${duration}s`,
+          '--drift-delay': `${delay}s`,
+        } as React.CSSProperties
+      }
     >
-      <svg
-        viewBox="0 0 250 150"
-        className="paper-cut-cloud"
-        style={{
-          width: `${250 * scale}px`,
-          height: `${150 * scale}px`,
-          // Use CSS drop-shadow for Safari, SVG filter for others
-          filter: isSafari
-            ? 'drop-shadow(6px 6px 3px rgba(0, 0, 0, 0.25))'
-            : 'url(#cloud-shadow)',
-          shapeRendering: 'geometricPrecision',
-        }}
-        aria-hidden="true"
+      <div
+        className="ruyi-cloud-inner"
+        style={
+          {
+            '--rotate-duration': `${duration * 1.5}s`,
+            '--rotate-delay': `${delay - 5}s`,
+          } as React.CSSProperties
+        }
       >
-        {/* Main cloud shape with smooth paper-cut styling */}
-        <path
-          d={path}
-          fill={color}
-          stroke="#851718"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
+        <svg
+          viewBox="0 0 200 130"
+          className="ruyi-cloud"
+          style={{
+            width: `${200 * scale}px`,
+            height: `${130 * scale}px`,
+            // "Lifted paper" shadow effect
+            filter: isSafari
+              ? 'drop-shadow(0px 8px 6px rgba(0, 0, 0, 0.25))'
+              : 'url(#cloud-shadow)',
+            shapeRendering: 'geometricPrecision',
+          }}
+          aria-hidden="true"
+        >
+          {/* Layer 1: Ruyi body with 3-stop radial gradient */}
+          <path d={path} fill={`url(#${gradientId})`} />
 
-        {/* Inner highlight for depth */}
-        <path
-          d={path}
-          fill="none"
-          stroke="rgba(255,255,255,0.5)"
-          strokeWidth="1"
-          strokeLinecap="round"
-          transform="translate(-2,-2)"
-          opacity="0.7"
-        />
+          {/* Layer 2: Paper fiber texture (6-8% visibility with multiply blend) */}
+          {!useSimpleTexture && (
+            <path
+              d={path}
+              fill="url(#paper-fiber)"
+              opacity="0.75"
+              style={{ mixBlendMode: 'multiply' }}
+            />
+          )}
 
-        {/* Subtle inner shadow layer */}
-        <path
-          d={path}
-          fill="rgba(0,0,0,0.08)"
-          transform="translate(3,3)"
-          style={{ mixBlendMode: 'multiply' }}
-        />
-      </svg>
+          {/* CSS fallback texture for Safari */}
+          {useSimpleTexture && (
+            <path
+              d={path}
+              fill="transparent"
+              className="paper-fiber-css-fallback"
+            />
+          )}
+
+          {/* Layer 3: Internal decorative swirl patterns (always visible, 90% opacity, 3px) */}
+          <g
+            fill="none"
+            stroke={detailStrokeColor}
+            strokeWidth="3"
+            strokeLinecap="round"
+            opacity="0.9"
+          >
+            {RUYI_DETAIL_PATHS.map((detailPath) => (
+              <path key={detailPath} d={detailPath} />
+            ))}
+          </g>
+
+          {/* Layer 4: Inner vignette shadow */}
+          <path d={path} fill="url(#grad-inner-shadow)" />
+
+          {/* Layer 5: Main stroke outline (3px like reference) */}
+          <path
+            d={path}
+            fill="none"
+            stroke={strokeColor}
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
+          {/* Layer 6: Top-left gradient highlight for lifted paper effect */}
+          <path
+            d={path}
+            fill="none"
+            stroke="url(#grad-highlight)"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            opacity="0.8"
+          />
+        </svg>
+      </div>
     </div>
   );
 }
