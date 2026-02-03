@@ -100,14 +100,38 @@ export function FestiveBackground() {
       {/* Paper-Cut Clouds - Full Background System */}
       <PaperCutClouds />
 
-      {/* Lanterns - Hanging from top */}
-      <div className="absolute top-0 left-20 animate-[float_4s_ease-in-out_infinite]">
-        <div className="h-20 w-[2px] bg-yellow-600 mx-auto"></div>
-        <LanternNew />
+      {/* Lanterns - Enhanced Design */}
+      <div className="absolute top-0 left-10 lantern-wrapper">
+        <div className="h-16 w-[2px] bg-gradient-to-b from-yellow-700 to-yellow-500 mx-auto"></div>
+        <Lantern size="medium" pattern="ruyi" />
       </div>
-      <div className="absolute top-0 right-20 animate-[float_5s_ease-in-out_infinite_1s]">
-        <div className="h-32 w-[2px] bg-yellow-600 mx-auto"></div>
-        <LanternNew />
+      <div
+        className="absolute top-0 left-32 lantern-wrapper"
+        style={{ animationDelay: '-1.5s' }}
+      >
+        <div className="h-24 w-[2px] bg-gradient-to-b from-yellow-700 to-yellow-500 mx-auto"></div>
+        <Lantern size="large" pattern="floral" />
+      </div>
+      <div
+        className="absolute top-0 right-12 lantern-wrapper"
+        style={{ animationDelay: '-2s' }}
+      >
+        <div className="h-20 w-[2px] bg-gradient-to-b from-yellow-700 to-yellow-500 mx-auto"></div>
+        <Lantern size="medium" pattern="cloud" />
+      </div>
+      <div
+        className="absolute top-0 right-36 lantern-wrapper"
+        style={{ animationDelay: '-0.5s' }}
+      >
+        <div className="h-28 w-[2px] bg-gradient-to-b from-yellow-700 to-yellow-500 mx-auto"></div>
+        <Lantern size="large" pattern="geometric" />
+      </div>
+      <div
+        className="absolute top-0 left-1/2 transform -translate-x-1/2 lantern-wrapper"
+        style={{ animationDelay: '-3s' }}
+      >
+        <div className="h-12 w-[2px] bg-gradient-to-b from-yellow-700 to-yellow-500 mx-auto"></div>
+        <Lantern size="small" pattern="ruyi" />
       </div>
 
       {/* Petals Container */}
@@ -124,14 +148,304 @@ export function FestiveBackground() {
   );
 }
 
-function LanternNew() {
+// Enhanced Tết Lantern Component with traditional Vietnamese design
+interface LanternProps {
+  size?: 'small' | 'medium' | 'large';
+  pattern?: 'ruyi' | 'floral' | 'cloud' | 'geometric';
+}
+
+function Lantern({ size = 'medium', pattern = 'ruyi' }: LanternProps) {
+  const sizeConfig = {
+    small: { width: 60, height: 80, viewBox: '0 0 80 120' },
+    medium: { width: 80, height: 100, viewBox: '0 0 100 140' },
+    large: { width: 100, height: 120, viewBox: '0 0 120 160' },
+  };
+
+  const { width, height, viewBox } = sizeConfig[size];
+
+  // Pattern definitions
+  const patterns = {
+    ruyi: (
+      <g fill="none" stroke="#FFD700" strokeWidth="0.8" opacity="0.7">
+        <path d="M25 40 Q30 35 35 40 Q40 45 45 40" />
+        <path d="M35 55 Q40 50 45 55 Q50 60 55 55" />
+        <path d="M25 70 Q30 65 35 70 Q40 75 45 70" />
+        <circle cx="35" cy="48" r="3" fill="#FFD700" opacity="0.5" />
+        <circle cx="45" cy="62" r="3" fill="#FFD700" opacity="0.5" />
+      </g>
+    ),
+    floral: (
+      <g fill="none" stroke="#FFD700" strokeWidth="0.6" opacity="0.8">
+        <g transform="translate(30, 45)">
+          <circle cx="0" cy="-5" r="3" fill="#FFD700" opacity="0.4" />
+          <circle cx="4" cy="-2" r="3" fill="#FFD700" opacity="0.4" />
+          <circle cx="2" cy="4" r="3" fill="#FFD700" opacity="0.4" />
+          <circle cx="-2" cy="4" r="3" fill="#FFD700" opacity="0.4" />
+          <circle cx="-4" cy="-2" r="3" fill="#FFD700" opacity="0.4" />
+          <circle cx="0" cy="0" r="2" fill="#FF6B35" />
+        </g>
+        <g transform="translate(50, 65)">
+          <circle cx="0" cy="-5" r="3" fill="#FFD700" opacity="0.4" />
+          <circle cx="4" cy="-2" r="3" fill="#FFD700" opacity="0.4" />
+          <circle cx="2" cy="4" r="3" fill="#FFD700" opacity="0.4" />
+          <circle cx="-2" cy="4" r="3" fill="#FFD700" opacity="0.4" />
+          <circle cx="-4" cy="-2" r="3" fill="#FFD700" opacity="0.4" />
+          <circle cx="0" cy="0" r="2" fill="#FF6B35" />
+        </g>
+      </g>
+    ),
+    cloud: (
+      <g fill="none" stroke="#FFD700" strokeWidth="0.8" opacity="0.7">
+        <path d="M25 45 Q30 40 35 45 Q40 50 35 55 Q30 60 25 55 Q20 50 25 45" />
+        <path d="M45 60 Q50 55 55 60 Q60 65 55 70 Q50 75 45 70 Q40 65 45 60" />
+        <path d="M55 40 Q60 35 65 40 Q70 45 65 50 Q60 55 55 50 Q50 45 55 40" />
+      </g>
+    ),
+    geometric: (
+      <g fill="none" stroke="#FFD700" strokeWidth="0.6" opacity="0.8">
+        <rect
+          x="30"
+          y="40"
+          width="12"
+          height="12"
+          transform="rotate(45 36 46)"
+        />
+        <rect
+          x="50"
+          y="55"
+          width="10"
+          height="10"
+          transform="rotate(45 55 60)"
+        />
+        <rect x="35" y="70" width="8" height="8" transform="rotate(45 39 74)" />
+        <line x1="30" y1="50" x2="70" y2="50" strokeDasharray="2,2" />
+        <line x1="30" y1="65" x2="70" y2="65" strokeDasharray="2,2" />
+      </g>
+    ),
+  };
+
+  // Tassel configuration
+  const tasselCount = size === 'large' ? 7 : size === 'medium' ? 5 : 3;
+  const tasselLength = size === 'large' ? 25 : size === 'medium' ? 20 : 15;
+
   return (
-    <div className="w-16 h-20 bg-red-600 rounded-lg relative shadow-[0_0_20px_rgba(255,165,0,0.6)] flex items-center justify-center border-t-4 border-b-4 border-yellow-500">
-      <div className="text-yellow-400 font-bold text-2xl">福</div>
-      <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 flex gap-1">
-        <div className="w-1 h-6 bg-yellow-500"></div>
-        <div className="w-1 h-6 bg-yellow-500"></div>
-        <div className="w-1 h-6 bg-yellow-500"></div>
+    <div className="relative" style={{ width, height }}>
+      <svg
+        viewBox={viewBox}
+        className="lantern-svg w-full h-full"
+        style={{
+          filter:
+            'drop-shadow(0 0 20px rgba(255, 140, 0, 0.7)) drop-shadow(0 0 40px rgba(255, 69, 0, 0.4))',
+        }}
+      >
+        <title>Traditional Vietnamese Tết Lantern</title>
+        <defs>
+          {/* Main lantern body gradient */}
+          <radialGradient id={`lantern-body-${size}`} cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stopColor="#FF6B35" />
+            <stop offset="30%" stopColor="#D2042D" />
+            <stop offset="70%" stopColor="#8B0000" />
+            <stop offset="100%" stopColor="#5C0000" />
+          </radialGradient>
+
+          {/* Inner glow */}
+          <radialGradient
+            id={`lantern-inner-${size}`}
+            cx="50%"
+            cy="40%"
+            r="50%"
+          >
+            <stop offset="0%" stopColor="#FFD700" stopOpacity="0.6" />
+            <stop offset="50%" stopColor="#FF8C00" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="transparent" stopOpacity="0" />
+          </radialGradient>
+
+          {/* Gold cap gradient */}
+          <linearGradient
+            id={`cap-gradient-${size}`}
+            x1="0%"
+            y1="0%"
+            x2="100%"
+            y2="0%"
+          >
+            <stop offset="0%" stopColor="#B8860B" />
+            <stop offset="30%" stopColor="#FFD700" />
+            <stop offset="50%" stopColor="#FFFDD0" />
+            <stop offset="70%" stopColor="#FFD700" />
+            <stop offset="100%" stopColor="#B8860B" />
+          </linearGradient>
+
+          {/* Rib gradient */}
+          <linearGradient
+            id={`rib-gradient-${size}`}
+            x1="0%"
+            y1="0%"
+            x2="100%"
+            y2="0%"
+          >
+            <stop offset="0%" stopColor="#8B0000" />
+            <stop offset="50%" stopColor="#D2042D" />
+            <stop offset="100%" stopColor="#8B0000" />
+          </linearGradient>
+        </defs>
+
+        {/* Outer glow halo */}
+        <ellipse
+          cx="50"
+          cy="55"
+          rx="42"
+          ry="52"
+          fill={`url(#lantern-inner-${size})`}
+          opacity="0.5"
+        />
+
+        {/* Main lantern body */}
+        <ellipse
+          cx="50"
+          cy="55"
+          rx="38"
+          ry="48"
+          fill={`url(#lantern-body-${size})`}
+        />
+
+        {/* Vertical ribs */}
+        <g
+          stroke={`url(#rib-gradient-${size})`}
+          strokeWidth="1"
+          fill="none"
+          opacity="0.6"
+        >
+          <path d="M15 55 Q15 30 25 20" />
+          <path d="M20 55 Q20 25 35 15" />
+          <path d="M30 55 Q30 20 50 12" />
+          <path d="M40 55 Q40 20 50 12" />
+          <path d="M50 55 L50 12" />
+          <path d="M60 55 Q60 20 50 12" />
+          <path d="M70 55 Q70 20 50 12" />
+          <path d="M80 55 Q80 25 65 15" />
+          <path d="M85 55 Q85 30 75 20" />
+        </g>
+
+        {/* Bottom ribs */}
+        <g
+          stroke={`url(#rib-gradient-${size})`}
+          strokeWidth="1"
+          fill="none"
+          opacity="0.6"
+        >
+          <path d="M15 55 Q15 80 25 90" />
+          <path d="M20 55 Q20 85 35 95" />
+          <path d="M30 55 Q30 90 50 98" />
+          <path d="M40 55 Q40 90 50 98" />
+          <path d="M50 55 L50 98" />
+          <path d="M60 55 Q60 90 50 98" />
+          <path d="M70 55 Q70 90 50 98" />
+          <path d="M80 55 Q80 85 65 95" />
+          <path d="M85 55 Q85 80 75 90" />
+        </g>
+
+        {/* Pattern overlay */}
+        {patterns[pattern]}
+
+        {/* Central blessing character */}
+        <text
+          x="50"
+          y="58"
+          textAnchor="middle"
+          fill="#FFD700"
+          fontSize="20"
+          fontWeight="bold"
+          filter="drop-shadow(0 1px 2px rgba(0,0,0,0.5))"
+          style={{ fontFamily: 'serif' }}
+        >
+          福
+        </text>
+
+        {/* Top cap */}
+        <rect
+          x="35"
+          y="5"
+          width="30"
+          height="8"
+          rx="2"
+          fill={`url(#cap-gradient-${size})`}
+        />
+        <rect x="40" y="3" width="20" height="4" rx="1" fill="#B8860B" />
+
+        {/* Bottom cap */}
+        <rect
+          x="35"
+          y="97"
+          width="30"
+          height="8"
+          rx="2"
+          fill={`url(#cap-gradient-${size})`}
+        />
+
+        {/* Gold trim rings */}
+        <ellipse
+          cx="50"
+          cy="12"
+          rx="36"
+          ry="4"
+          fill="none"
+          stroke="#FFD700"
+          strokeWidth="1.5"
+        />
+        <ellipse
+          cx="50"
+          cy="98"
+          rx="36"
+          ry="4"
+          fill="none"
+          stroke="#FFD700"
+          strokeWidth="1.5"
+        />
+
+        {/* Decorative bands */}
+        <rect
+          x="15"
+          y="35"
+          width="70"
+          height="3"
+          fill="#FFD700"
+          opacity="0.3"
+        />
+        <rect
+          x="15"
+          y="72"
+          width="70"
+          height="3"
+          fill="#FFD700"
+          opacity="0.3"
+        />
+      </svg>
+
+      {/* Tassels */}
+      <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 flex gap-1">
+        {Array.from({ length: tasselCount }).map((_, tasselIndex) => (
+          <div
+            key={`tassel-${size}-${pattern}-${tasselIndex}`}
+            className="lantern-tassel flex flex-col items-center"
+            style={{ animationDelay: `${-tasselIndex * 0.2}s` }}
+          >
+            {/* Gold bead */}
+            <div className="w-2 h-2 rounded-full bg-gradient-to-br from-yellow-300 to-yellow-600 shadow-sm" />
+            {/* Tassel strands */}
+            <div
+              className="w-[2px] bg-gradient-to-b from-yellow-500 via-yellow-400 to-yellow-600 mt-0.5"
+              style={{ height: tasselLength + (tasselIndex % 2 === 0 ? 5 : 0) }}
+            />
+            <div
+              className="w-[2px] bg-gradient-to-b from-yellow-500 via-yellow-400 to-yellow-600 mt-0.5"
+              style={{ height: tasselLength + (tasselIndex % 2 === 0 ? 0 : 5) }}
+            />
+            <div
+              className="w-[2px] bg-gradient-to-b from-yellow-500 via-yellow-400 to-yellow-600 mt-0.5"
+              style={{ height: tasselLength }}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );

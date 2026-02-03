@@ -385,6 +385,94 @@
   border-color: transparent #daa520 transparent transparent;
 }
 
+/* ============================================
+   ENHANCED TẾT LANTERN STYLES
+   ============================================ */
+
+/* Lantern sway animation */
+@keyframes lantern-sway {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+/* Inner glow pulse */
+@keyframes lantern-glow-pulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 15px rgba(255, 140, 0, 0.6))
+      drop-shadow(0 0 30px rgba(255, 69, 0, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 0 25px rgba(255, 140, 0, 0.8))
+      drop-shadow(0 0 50px rgba(255, 69, 0, 0.5));
+  }
+}
+
+/* Tassel sway */
+@keyframes tassel-sway {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(2px);
+  }
+  75% {
+    transform: translateX(-2px);
+  }
+}
+
+/* Lantern wrapper */
+.lantern-wrapper {
+  animation: lantern-sway 4s ease-in-out infinite;
+  transform-origin: top center;
+}
+
+.lantern-wrapper:nth-child(2) {
+  animation-delay: -1s;
+}
+
+.lantern-wrapper:nth-child(3) {
+  animation-delay: -2s;
+}
+
+/* Lantern SVG styles */
+.lantern-svg {
+  animation: lantern-glow-pulse 3s ease-in-out infinite;
+}
+
+/* Lantern tassel animation */
+.lantern-tassel {
+  animation: tassel-sway 2s ease-in-out infinite;
+}
+
+.lantern-tassel:nth-child(2) {
+  animation-delay: -0.3s;
+}
+
+.lantern-tassel:nth-child(3) {
+  animation-delay: -0.6s;
+}
+
+.lantern-tassel:nth-child(4) {
+  animation-delay: -0.9s;
+}
+
+.lantern-tassel:nth-child(5) {
+  animation-delay: -1.2s;
+}
+
+/* Hanging string */
+.lantern-string {
+  stroke: #b8860b;
+  stroke-width: 2;
+}
+
 /* 3D Card Lift Effect */
 .winner-card {
   transition:
