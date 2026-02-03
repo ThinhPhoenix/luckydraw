@@ -502,3 +502,164 @@
     transform: rotate(2deg);
   }
 }
+
+/* Paper-Cut Cloud Drift Animation */
+/* Standard keyframes */
+@keyframes cloud-drift {
+  0% {
+    transform: translateX(-35vw) translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  25% {
+    transform: translateX(20vw) translateY(-20px) rotate(2deg);
+  }
+  50% {
+    transform: translateX(50vw) translateY(0) rotate(0deg);
+  }
+  75% {
+    transform: translateX(80vw) translateY(20px) rotate(-2deg);
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(135vw) translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+}
+
+/* WebKit keyframes for older Safari/Chrome */
+@-webkit-keyframes cloud-drift {
+  0% {
+    -webkit-transform: translateX(-35vw) translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  25% {
+    -webkit-transform: translateX(20vw) translateY(-20px) rotate(2deg);
+  }
+  50% {
+    -webkit-transform: translateX(50vw) translateY(0) rotate(0deg);
+  }
+  75% {
+    -webkit-transform: translateX(80vw) translateY(20px) rotate(-2deg);
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translateX(135vw) translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+}
+
+/* Mozilla keyframes for Firefox */
+@-moz-keyframes cloud-drift {
+  0% {
+    -moz-transform: translateX(-35vw) translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  25% {
+    -moz-transform: translateX(20vw) translateY(-20px) rotate(2deg);
+  }
+  50% {
+    -moz-transform: translateX(50vw) translateY(0) rotate(0deg);
+  }
+  75% {
+    -moz-transform: translateX(80vw) translateY(20px) rotate(-2deg);
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    -moz-transform: translateX(135vw) translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+}
+
+/* Cloud layer parallax base styles */
+.cloud-layer-1,
+.cloud-layer-2 {
+  transition: transform 0.1s ease-out;
+}
+
+/* Paper-cut cloud styling - smooth edges */
+.paper-cut-cloud {
+  shape-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.paper-cut-cloud path {
+  shape-rendering: geometricPrecision;
+}
+
+/* Enhanced cloud drift with cross-browser GPU acceleration */
+.cloud-drift {
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-perspective: 1000;
+  perspective: 1000;
+  animation-fill-mode: both;
+  -webkit-animation-fill-mode: both;
+}
+
+/* Safari-specific: Disable will-change to prevent flickering */
+@supports (-webkit-touch-callout: none) {
+  .cloud-drift {
+    will-change: auto;
+  }
+
+  .paper-cut-cloud {
+    shape-rendering: crispEdges;
+  }
+
+  .cloud-layer-1,
+  .cloud-layer-2 {
+    -webkit-transform-style: flat;
+    transform-style: flat;
+  }
+}
+
+/* Vignette effect for depth */
+.cloud-vignette {
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    transparent 50%,
+    rgba(133, 23, 24, 0.15) 100%
+  );
+}
+
+/* Grain overlay with mix-blend-mode fallback */
+.grain-overlay {
+  mix-blend-mode: overlay;
+  -webkit-mix-blend-mode: overlay;
+}
+
+/* Fallback for browsers without mix-blend-mode support */
+@supports not (mix-blend-mode: overlay) {
+  .grain-overlay {
+    opacity: 0.05;
+  }
+}
+
+/* Firefox-specific optimizations */
+@-moz-document url-prefix() {
+  .paper-cut-cloud {
+    shape-rendering: geometricPrecision;
+  }
+}

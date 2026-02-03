@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { PaperCutClouds } from './PaperCutClouds';
 
 export function FestiveBackground() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -96,13 +97,8 @@ export function FestiveBackground() {
         }}
       />
 
-      {/* Clouds (SVG) - Top Corners */}
-      <div className="absolute top-0 left-0 w-64 h-64 opacity-20 text-yellow-500 transform -translate-x-10 -translate-y-10">
-        <CloudSvg />
-      </div>
-      <div className="absolute top-0 right-0 w-64 h-64 opacity-20 text-yellow-500 transform translate-x-10 -translate-y-10 scale-x-[-1]">
-        <CloudSvg />
-      </div>
+      {/* Paper-Cut Clouds - Full Background System */}
+      <PaperCutClouds />
 
       {/* Lanterns - Hanging from top */}
       <div className="absolute top-0 left-20 animate-[float_4s_ease-in-out_infinite]">
@@ -125,19 +121,6 @@ export function FestiveBackground() {
         <TreeSvg type="peach" animationDelay="3s" />
       </div>
     </div>
-  );
-}
-
-function CloudSvg() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path d="M6.001 14.5C6.001 12.015 8.016 10 10.501 10C10.743 10 10.979 10.02 11.209 10.058C11.758 6.657 14.706 4 18.001 4C21.867 4 25.001 7.134 25.001 11C25.001 11.087 24.996 11.173 24.988 11.258C24.998 11.258 25.001 11.259 25.001 11.264V14.5C25.001 16.985 22.986 19 20.501 19H6.001C3.516 19 1.501 16.985 1.501 14.5C1.501 12.015 3.516 10 6.001 10V14.5Z" />
-    </svg>
   );
 }
 
