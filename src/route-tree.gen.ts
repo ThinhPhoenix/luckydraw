@@ -9,14 +9,8 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as LuckyDrawRouteImport } from './routes/lucky-draw'
 import { Route as IndexRouteImport } from './routes/index'
 
-const LuckyDrawRoute = LuckyDrawRouteImport.update({
-  id: '/lucky-draw',
-  path: '/lucky-draw',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -25,39 +19,28 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/lucky-draw': typeof LuckyDrawRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/lucky-draw': typeof LuckyDrawRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/lucky-draw': typeof LuckyDrawRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/lucky-draw'
+  fullPaths: '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/lucky-draw'
-  id: '__root__' | '/' | '/lucky-draw'
+  to: '/'
+  id: '__root__' | '/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  LuckyDrawRoute: typeof LuckyDrawRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/lucky-draw': {
-      id: '/lucky-draw'
-      path: '/lucky-draw'
-      fullPath: '/lucky-draw'
-      preLoaderRoute: typeof LuckyDrawRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -70,7 +53,6 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  LuckyDrawRoute: LuckyDrawRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
