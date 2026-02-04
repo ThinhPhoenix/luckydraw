@@ -480,11 +480,11 @@ function RuyiCloud({
           <img
             src="/horse.svg"
             alt="Horse on cloud"
-            className="absolute"
+            className="absolute -scale-x-100"
             style={{
               width: `${(1080 * horseScale) / 8}px`,
               height: `${(1080 * horseScale) / 8}px`,
-              left: '50%',
+              left: '0%',
               top: '10%',
               transform: 'translate(-50%, -50%)',
               filter: isSafari
