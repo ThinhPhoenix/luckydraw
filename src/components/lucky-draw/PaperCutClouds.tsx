@@ -1,3 +1,4 @@
+import Assets from '@/assets';
 import { useEffect, useRef, useState } from 'react';
 
 interface CloudConfig {
@@ -84,7 +85,7 @@ export function PaperCutClouds() {
       let id = 0;
 
       // Determine number of horses (0-2)
-      const horseCount = Math.floor(Math.random() * 3);
+      const horseCount = Math.floor(Math.random() * 5);
       const totalClouds = 14;
       const horseIndices = new Set<number>();
 
@@ -478,7 +479,7 @@ function RuyiCloud({
         {/* Horse SVG attached to cloud (if hasHorse is true) */}
         {hasHorse && (
           <img
-            src="/horse.svg"
+            src={Assets.Horse}
             alt="Horse on cloud"
             className="absolute -scale-x-100"
             style={{
