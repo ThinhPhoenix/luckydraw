@@ -12,6 +12,7 @@ interface CloudConfig {
   strokeColor: string;
   detailStrokeColor: string;
   layer: 1 | 2;
+  hasHorse?: boolean;
 }
 
 // Ruyi auspicious cloud body path
@@ -82,6 +83,19 @@ export function PaperCutClouds() {
       const newClouds: CloudConfig[] = [];
       let id = 0;
 
+      // Determine number of horses (0-2)
+      const horseCount = Math.floor(Math.random() * 3);
+      const totalClouds = 14;
+      const horseIndices = new Set<number>();
+
+      // Randomly select unique cloud indices for horses
+      while (
+        horseIndices.size < horseCount &&
+        horseIndices.size < totalClouds
+      ) {
+        horseIndices.add(Math.floor(Math.random() * totalClouds));
+      }
+
       // Layer 1: Background giants (8 clouds) - full page coverage including header
       // Ruyi clouds are 10% larger: 0.9-1.5x (vs old 0.8-1.5x)
       for (let i = 0; i < 8; i++) {
@@ -99,6 +113,7 @@ export function PaperCutClouds() {
           strokeColor: style.strokeColor,
           detailStrokeColor: style.detailStrokeColor,
           layer: 1,
+          hasHorse: horseIndices.has(i),
         });
       }
 
@@ -119,6 +134,7 @@ export function PaperCutClouds() {
           strokeColor: style.strokeColor,
           detailStrokeColor: style.detailStrokeColor,
           layer: 2,
+          hasHorse: horseIndices.has(8 + i),
         });
       }
 
@@ -359,9 +375,11 @@ function RuyiCloud({
     gradientId,
     strokeColor,
     detailStrokeColor,
+    hasHorse,
   } = config;
 
-  // Using original duration values for elegant, slow animation
+  const horseScale = scale * 0.85;
+
   return (
     <div
       className="absolute ruyi-cloud-wrapper"
@@ -456,6 +474,26 @@ function RuyiCloud({
             opacity="0.8"
           />
         </svg>
+
+        {/* Horse SVG attached to cloud (if hasHorse is true) */}
+        {hasHorse && (
+          <img
+            src="/horse.svg"
+            alt="Horse on cloud"
+            className="absolute"
+            style={{
+              width: `${(1080 * horseScale) / 8}px`,
+              height: `${(1080 * horseScale) / 8}px`,
+              left: '50%',
+              top: '10%',
+              transform: 'translate(-50%, -50%)',
+              filter: isSafari
+                ? 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.2))'
+                : 'url(#cloud-shadow)',
+              pointerEvents: 'none',
+            }}
+          />
+        )}
       </div>
     </div>
   );
